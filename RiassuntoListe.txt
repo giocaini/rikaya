@@ -1,0 +1,45 @@
+Ogni PCB ha un campo di tipo list_head che lo identifica all'interno di una lista:
+- p_next lo identifica nella lista dei processi liberi (pcbFree)
+- p_sib lo identifica nella lista dei figli di un determinato padre (ovvero lista dei fratelli)
+
+Se so il campo di tipo list_head (p_next o p_sib) di un particolare PCB, posso risalire al PCB identificato da quel campo list_head:
+- se conosco una variabile p_next_temp che punta al p_next di un pcb:
+	- il puntatore a tale pcb sarà dato dalla funzione
+		pcb_t *p = container_of(p_next_temp, pcb_t, p_next);
+- se conosco una variabile p_sib_temp che punta al p_sib di un pcb:
+	- il puntatore a tale pcb sarà dato dalla funzione
+		pcb_t *p = container_of(p_sib_temp, pcb_t, p_sib);
+
+Per scorrere una lista, ho bisogno di un elemento di partenza, detto "sentinella".
+- Per la lista dei processi liberi, è una variabile globale: pcbFree_h
+- Per la lista dei fratelli, è un campo del pcb padre dei fratelli: p_child
+Poi con le funzioni list_next(...) e list_prev(...) vado avanti o indietro nella lista dei list_head.
+Ogni volta che so un list_head per avere il PCB devo usare la container_of (vedi sopra).
+
+NOTA BENE: La sentinella NON fa parte della lista vera e propria! Il primo elemento reale (associato a un PCB) della lista è list_next(sentinella).
+Da qui deriva che:
+-	Non si può applicare la container_of a pcbFree_h o a p_child: la si può applicare a list_next(pcbFree_h) o list_next(p_child), se si vuole ricavare il primo pcb di entrambe le liste.
+-	Una lista vuota è formata da un solo list_head (la sentinella), che in prev e next punta a se stessa.
+
+
+Macro usate di listx:
+- container_of(ptr, type, member): restituisce un puntatore di tipo type all'istanza della struttura che contiene un campo member, puntato da ptr.
+- LIST_HEAD(name): è equivalente a scrivere --> struct list_head name = {&(name), &(name)}
+	Ovvero, dichiara una struttura di tipo list_head di nome name, con next e prev che puntano alla struttura stessa.
+	Ovvero, inizializza una lista vuota: se vogliamo, inizializza una SENTINELLA ad una lista.
+- list_for_each(pos, head): cicla la lista la cui sentinella è head. pos deve essere solamente un campo di tipo list_head* e serve per iterare (come la i del for).
+- list_for_each_prev(pos, head): uguale alla precedenta, ma cicla dal fondo alla testa.
+- list_for_each_entry(pos, head, member): combina list_for_each con container_of:
+	cicla una lista come la list_for_each ma il campo pos non punta al list_head, ma al suo contenitore (il PCB nel nostro caso)
+	da usare tutte le volte che si vuole ciclare una lista di pcb
+- list_for_each_entry_reverse(pos, head, member): uguale alla precedente, ma cicla dal fondo alla testa.
+
+
+Funzioni usate di listx:
+- list_add(nuovo, sentinella): inserisce IN TESTA alla lista puntata da sentinella il list_head nuovo.
+- list_add_tail(nuovo, sentinella): inserisce IN CODA alla lista puntata da sentinella il list_head nuovo.
+- list_del(eli): elimina l'elemento list_head eli dalla lista in cui è contenuta! Notare che non c'è bisogno di sapere la sentinella di tale lista.
+- list_empty(sentinella): TRUE se la lista puntata da sentinella è vuota, FALSE altrimenti
+- list_next(current): NULL se la lista è vuota, current->next altrimenti
+- list_prev(current): NULL se la lista è vuota, current->prev altrimenti
+- - > Attenzione: non si può usare list_next(current) == NULL come controllo per vedere se la lista è finita, perchè le liste sono circolari: dopo l'ultimo elemento si rinizia da capo, non c'è NULL.
