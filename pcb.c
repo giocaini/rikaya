@@ -230,6 +230,7 @@ void insertChild(pcb_t *prnt, pcb_t *p){
 	list_add_tail(&(p->p->sib),&(figlio)); 	//list_add_tail prende in input due list_head e inserisce il primo alla lista identifica dal secondo.
 											//Abbiamo detto che ciè che collega i pcb nelle liste p_child di pcb_t è il campo p->sib.
 											//Quindi uso p->p_sib al posto di p. (p sarebbe di tipo pcb_t non list_head).
+	p->p_parent = prnt; //Aggiorno il campo p_parent di p a prnt.
 }
 
 /* 12 - Rimuove il primo figlio del PCB puntato da p. Se p non ha figli, restituisce NULL. */
@@ -251,10 +252,11 @@ pcb_t *removeChild(pcb_t *p){
 		return NULL; //Se non ne ha restituisce NULL
 	else {		//p ha figli: restituisco il primo
 		list_head *figli = p->p_child; //Sentinella della lista dei figli
-		list_head *list_primofiglio = figli->next; //Primo figlio: è il next della sentinella (che punta a p_sib del primo figlio)
+		list_head *list_primofiglio = list_next(figli); //Primo figlio: è il next della sentinella (che punta a p_sib del primo figlio)
 		//Devo ricavarmi il pcb_t che contiene list_primofiglio:
 		pcb_t *primofiglio = container_of(list_primofiglio, pcb_t, p_sib); //Ho il pcb del primo figlio
-		list_del(&(p->p_sib)); //Elimino p dalla lista puntata da p_child: ovvero elimino p_sib dalla lista in cui è.
+		list_del(&(primofiglio->p_sib)); //Elimino primofiglio dalla lista puntata da p_child: ovvero elimino p_sib dalla lista in cui è.
+		primofiglio->p_parent = NULL; //Aggiorno a NULL il campo p_parent di primofiglio
 		return primofiglio; //Restituisco il puntatore al primo figlio di p (che ho appena tolto dalla lista dei figli di p).
 	}
 }
@@ -290,6 +292,7 @@ pcb_t *outChild(pcb_t *p){
 		//In particolare p->p_sib farà parte della lista puntata da p->p_parent->p_child.
 		//Basta togliere p->p_sib dalla lista in cui si trova!
 		list_del(&(p->p_sib);
+		p->p_parent = NULL; //p è diventato orfano: imposto a NULL il campo p_parent
 		return p;
 	}
 }
