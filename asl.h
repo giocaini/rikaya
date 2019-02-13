@@ -3,7 +3,7 @@
 
 #include <types_rikaya.h>
 
-/* ASL handling functions */
+/* ASL handling functions 14 - 20 */
 semd_t* getSemd(int *key);
 void initASL();
 
