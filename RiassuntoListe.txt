@@ -1,9 +1,9 @@
 Struttura PCB:
 typedef struct pcb_t {
-	struct list_head p_next;		//concatenatore all'elemento successivo in lista
+	struct list_head p_next;		//concatenatore all'elemento successivo in lista (se i PCB sono organizzati in liste)
 	struct pcb_t* p_parent;			//puntatore al nodo padre
-	struct list_head p_child;		//puntatore al figlio
-	struct list_head p_sib;			//puntatore al fratello (sibling)
+	struct list_head p_child;		//concatenatore all'elemento figlio nell'albero (se i PCB sono organizzati in alberi)
+	struct list_head p_sib;			//concatenatore all'elemento fratello nell'albero (se i PCB sono organizzati in alberi)
 	state_t p_s;
 	int priority;
 	int *p_semKey;
@@ -53,3 +53,12 @@ Funzioni usate di listx:
 - list_next(current): NULL se la lista � vuota, current->next altrimenti
 - list_prev(current): NULL se la lista � vuota, current->prev altrimenti
 - - > Attenzione: non si pu� usare list_next(current) == NULL come controllo per vedere se la lista � finita, perch� le liste sono circolari: dopo l'ultimo elemento si rinizia da capo, non c'� NULL.
+
+Struttura SEMD:
+typedef struct semd_t {
+	struct list_head s_next;	//concatenatore che punta al SEMD successivo
+	int *s_key;					//key del SEMD
+	struct list_head s_procQ;	//puntatore alla lista/all'albero di processi PCB
+} semd_t;
+
+Può comparire un SEMD nella ASL che ha una una coda dei processi vuota.
