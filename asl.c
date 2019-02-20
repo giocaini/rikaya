@@ -44,14 +44,29 @@ int insertBlocked(int *key, pcb_t* p){
 						//e se è un albero? cosa ne sa SEMD se punta a una lista o ad un albero???
 		return FALSE;
 	}
+
+/*
 	//caso 2: SEMD non presente nella ASL -> prendo SEMD dalla lista semdFree
-	else if( /*condizione*/ ) {
+	else if( bella ) {
 		//da fare AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 		return FALSE;
 	}
 	//caso 3: lista semdFree è vuota
 	else if( list_empty(&semdFree_h) == 1 ) return TRUE; //se 1-> lista vuota, necessario specificare la condizione if? perchè secondo me no
+*/
 
+	else{	//semd == NULL quindi abbiamo 2 possibili casi
+		//caso 3: SEMD non presente nella ASL && lista semdFree è vuota
+		if( list_empty(&semdFree_h) == 1 ) return TRUE; //se 1-> lista vuota, necessario specificare la condizione if? perchè secondo me no. si invece
+
+		//caso 2: SEMD non presente nella ASL -> prendo SEMD dalla lista semdFree
+		semd_t *new_semd = list_next( &semdFree_h );	//restituisce il primo elemento della lista semdFree
+ 		list_del(&new_semd);							//elimino new_semd dalla lista semdFree
+		list_add_tail(&new_semd, &semd_h);				//aggiunge semd alla coda ASL
+		new_semd->s_key = &key							//assegno key
+		mkEmptyProcQ( &(new_semd->s_procQ) );			//creo lista di pcb puntata da s_procQ
+		return FALSE;
+	}
 	 
 }
 
@@ -63,17 +78,29 @@ int insertBlocked(int *key, pcb_t* p){
 pcb_t* removeBlocked(int *key){
 
 	semd_t* semd = getSemd(&key);
-	//caso 1: descrittore non esiste nella ASL
-	if(semd == NULL) return NULL;
-	
-	//caso 1.5: c'è SEMD ma non ha PCB
-	else if( list_empty( &(semd->s_procQ) ) == 1 ) return NULL; //il semd non ha processi, se lista pcb è vuota
-	// -> ma in teoria non dovrebbe succedere, credo
 
-	//caso 2: ritorna il primo PCB dalla coda dei processi bloccati 
+	//caso 1: SEMD non esiste nella ASL
+	if(semd == NULL) return NULL;
+
+	//caso 2: SEMD esiste -> ora abbiamo 3 possibili casi
+
+	//caso 2.A : c'è SEMD ma non ha PCB
+	else if( list_empty( &(semd->s_procQ) ) == 1 ) return NULL; //il semd non ha processi, se lista pcb è vuota
+	/* elimina il SEMD dato che non ha processi?? */
+
+	//caso 2.B: ritorna il primo PCB dalla coda dei processi bloccati 
 	pcb_t* pcb_tmp = removeProcQ( &(semd->s_procQ) );	//rimuovo il primo pcb dalla coda
-	if( list_empty( &(semd->s_procQ) ) == 1 ){ 		//controllo se la coda sia vuota, 1->vuota
-		list_del( &semd );	//è vuota => elimino SEMD da ASL
+
+	//caso 2.C: controlli per vedere se eliminare semd da ASL
+	if( list_empty( &(semd->s_procQ) ) == 1 ){ 		//controllo se la coda è vuota, 1->vuota
+		list_del(&semd);	//è vuota => elimino SEMD da ASL
+
+		/*devo resettare i valori del semd che poi aggiungerò alla semdFree*/
+		semd->s_next = NULL;
+		semd->s_key = ah boh;	//????????? può essere che lo lasciamo così, tanto quando lo tireremo fuori dalla semdFree la riassegnamo la key
+		semd->s_next = s_procQ;	
+
+		list_add(&semd, &semdFree_h);		//aggiungo semd alla lista semdFree (indifferente se in testa o in coda)
 	}
 
 	return pcb_tmp;		//ritorna il puntatore al primo processo bloccato del semd
@@ -115,9 +142,12 @@ void outChildBlocked(pcb_t *p){
 
 /* 20 -	Inizializza la lista dei semdFree in modo da contenere tutti gli elementi della semdTable.
 		Questo metodo viene invocato una volta sola durante l’inizializzazione della struttura dati. */
-void initASL(void){
+HIDDEN void initASL(void){
 
 	//ma l'elemento semdTable[MAXPROC] esiste già o la dobbiamo creare noi?
+
+	HIDDEN pcb_t pcbFree_table[MAXPROC]; //Array statico contenente MAX_PROC pcb_t
+	//tocca riempirlo sto array di strutture pcb_t
 
 	INIT_LIST_HEAD(semdFree_h);		//inizializza i campi, con entrambi i campi che puntano a se stessa)
 	for(int i = 0; i < MAXPROC; i++){
