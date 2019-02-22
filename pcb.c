@@ -4,12 +4,15 @@
 /* Ultimo agg: Lun 11/02 			*/
 /************************************/
 
-#include "pcb.h"
+#define	HIDDEN static
 
 // Scelte progettuali:
 // - La lista pcbFree ha gli elementi inseriti in coda, non in testa
 
 HIDDEN LIST_HEAD(pcbFree_h); //Macro di listx.h: inizializza la sentinella alla pcbFree. pcbFree_h è la sentinella della coda di pcb
+
+/* DICHIARAZIONI */
+HIDDEN void initPcbs(void);
 
 /* PCB handling functions */
 
