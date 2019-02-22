@@ -1,73 +1,98 @@
-sara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=gnu11 -I/usr/local/include/umps2 -c pcb.c
-pcb.c: In function ‘allocPcb’:
-pcb.c:60:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
-  INIT_LIST_HEAD(tempPcb->p_next);
-                 ~~~~~~~^~~~~~~~
-In file included from pcb.c:9:
-listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
- static inline void INIT_LIST_HEAD(struct list_head *list)
-                                   ~~~~~~~~~~~~~~~~~~^~~~
-pcb.c:61:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
-  INIT_LIST_HEAD(tempPcb->p_child);
-                 ~~~~~~~^~~~~~~~~
-In file included from pcb.c:9:
-listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
- static inline void INIT_LIST_HEAD(struct list_head *list)
-                                   ~~~~~~~~~~~~~~~~~~^~~~
-pcb.c:62:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
-  INIT_LIST_HEAD(tempPcb->p_sib);
-                 ~~~~~~~^~~~~~~
-In file included from pcb.c:9:
-listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
- static inline void INIT_LIST_HEAD(struct list_head *list)
-                                   ~~~~~~~~~~~~~~~~~~^~~~
-pcb.c: In function ‘insertProcQ’:
-pcb.c:91:42: error: incompatible type for argument 1 of ‘list_prev’
-    __list_add(&(p->p_next), &(list_prev(i->p_next)), &(i->p_next)); //inserisco p nella lista head tra prev di i e i
-                                         ~^~~~~~~~
-In file included from pcb.c:9:
-listx.h:216:67: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
- static inline struct list_head *list_prev(const struct list_head *current)
-                                           ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-pcb.c: In function ‘headProcQ’:
-pcb.c:103:5: error: expected ‘(’ before ‘list_empty’
-  if list_empty(head)
-     ^~~~~~~~~~
-     (
-pcb.c: In function ‘removeProcQ’:
-pcb.c:113:5: error: expected ‘(’ before ‘list_empty’
-  if list_empty(head)
-     ^~~~~~~~~~
-     (
-pcb.c: In function ‘emptyChild’:
-pcb.c:141:24: error: incompatible type for argument 1 of ‘list_empty’
-  return list_empty(this->p_child); //TRUE se p_child è vuota, FALSE altrimenti
-                    ~~~~^~~~~~~~~
-In file included from pcb.c:9:
+sara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=gnu11 -I/usr/local/include/umps2 -c asl.c
+asl.c: In function ‘getSemd’:
+asl.c:27:17: error: incompatible type for argument 1 of ‘list_empty’
+  if (list_empty(semd_h)) return NULL;   //se ASL è vuota -> NULL
+                 ^~~~~~
+In file included from asl.c:9:
 listx.h:187:54: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
  static inline int list_empty(const struct list_head *head)
                               ~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-pcb.c: In function ‘removeChild’:
-pcb.c:156:3: error: unknown type name ‘list_head’; use ‘struct’ keyword to refer to the type
-   list_head *list_primofiglio = list_next(p->p_child); //Primo figlio: è il next della sentinella (che punta a p_sib del primo figlio)
-   ^~~~~~~~~
-   struct 
-pcb.c:156:44: error: incompatible type for argument 1 of ‘list_next’
-   list_head *list_primofiglio = list_next(p->p_child); //Primo figlio: è il next della sentinella (che punta a p_sib del primo figlio)
-                                           ~^~~~~~~~~
-In file included from pcb.c:9:
-listx.h:200:67: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
- static inline struct list_head *list_next(const struct list_head *current)
-                                           ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-listx.h:31:49: warning: initialization of ‘const struct list_head *’ from incompatible pointer type ‘int *’ [-Wincompatible-pointer-types]
+listx.h:263:32: error: invalid type argument of ‘->’ (have ‘struct list_head’)
+  for (pos = container_of((head)->next, typeof(*pos), member);      \
+                                ^~
+listx.h:31:50: note: in definition of macro ‘container_of’
    const typeof( ((type *)0)->member ) *__mptr = (ptr); \
-                                                 ^
-pcb.c:158:24: note: in expansion of macro ‘container_of’
-   pcb_t *primofiglio = container_of(list_primofiglio, pcb_t, p_sib); //Ho il pcb del primo figlio
-                        ^~~~~~~~~~~~
-listx.h:31:49: note: (near initialization for ‘primofiglio’)
-   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
-                                                 ^
-pcb.c:158:24: note: in expansion of macro ‘container_of’
-   pcb_t *primofiglio = container_of(list_primofiglio, pcb_t, p_sib); //Ho il pcb del primo figlio
-                        ^~~~~~~~~~~~
+                                                  ^~~
+asl.c:29:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, semd_h, s_next){  //ciclo sulla lista ASL partendo da sentinella semd_h
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:264:15: error: invalid operands to binary != (have ‘struct list_head *’ and ‘struct list_head’)
+  &pos->member != (head);        \
+               ^~
+asl.c:29:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, semd_h, s_next){  //ciclo sulla lista ASL partendo da sentinella semd_h
+  ^~~~~~~~~~~~~~~~~~~
+asl.c:33:16: error: invalid operands to binary == (have ‘struct list_head’ and ‘struct list_head’)
+   if(i->s_next == semd_h) return NULL;
+      ~~~~~~~~~ ^~
+asl.c: In function ‘insertBlocked’:
+asl.c:50:3: warning: implicit declaration of function ‘insertProcQ’; did you mean ‘insertBlocked’? [-Wimplicit-function-declaration]
+   insertProcQ( &(semd->s_procQ) , p); //aggiunge il PCB nella lista in base alla sua priorità
+   ^~~~~~~~~~~
+   insertBlocked
+asl.c:77:20: error: incompatible type for argument 1 of ‘list_del’
+   list_del(new_semd->s_next);      //elimino new_semd dalla lista semdFree
+            ~~~~~~~~^~~~~~~~
+In file included from asl.c:9:
+listx.h:161:47: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
+ static inline void list_del(struct list_head *entry)
+                             ~~~~~~~~~~~~~~~~~~^~~~~
+asl.c:79:24: error: expected ‘;’ before ‘mkEmptyProcQ’
+   new_semd->s_key = key       //assegno key
+                        ^
+                        ;
+asl.c:81:3:
+   mkEmptyProcQ( &(new_semd->s_procQ) );   //creo lista di pcb puntata da s_procQ
+   ~~~~~~~~~~~~          
+asl.c: In function ‘removeBlocked’:
+asl.c:108:19: warning: implicit declaration of function ‘removeProcQ’; did you mean ‘removeBlocked’? [-Wimplicit-function-declaration]
+  pcb_t* pcb_tmp = removeProcQ( &(semd->s_procQ) ); //rimuovo il primo pcb dalla coda
+                   ^~~~~~~~~~~
+                   removeBlocked
+asl.c:108:19: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+asl.c:112:12: warning: passing argument 1 of ‘list_del’ from incompatible pointer type [-Wincompatible-pointer-types]
+   list_del(&semd); //è vuota => elimino SEMD da ASL
+            ^~~~~
+In file included from asl.c:9:
+listx.h:161:47: note: expected ‘struct list_head *’ but argument is of type ‘semd_t **’ {aka ‘struct semd_t **’}
+ static inline void list_del(struct list_head *entry)
+                             ~~~~~~~~~~~~~~~~~~^~~~~
+asl.c:114:29: error: incompatible type for argument 2 of ‘list_add’
+   list_add(&(semd->s_next), semdFree_h);  //aggiungo semd alla lista semdFree (indifferente se in testa o in coda)
+                             ^~~~~~~~~~
+In file included from asl.c:9:
+listx.h:122:70: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
+ static inline void list_add(struct list_head *new, struct list_head *head)
+                                                    ~~~~~~~~~~~~~~~~~~^~~~
+asl.c: In function ‘outBlocked’:
+asl.c:128:15: warning: implicit declaration of function ‘outProcQ’; did you mean ‘outBlocked’? [-Wimplicit-function-declaration]
+  pcb_t* pcb = outProcQ( &(semd->s_procQ), p); //elimina il PCB puntato da p, nella coda puntata da semd->s_procQ
+               ^~~~~~~~
+               outBlocked
+asl.c:128:15: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+asl.c: In function ‘headBlocked’:
+asl.c:138:26: warning: passing argument 1 of ‘getSemd’ from incompatible pointer type [-Wincompatible-pointer-types]
+  semd_t* semd =  getSemd(&key);  //prendo il SEMD associato alla key
+                          ^~~~
+asl.c:25:29: note: expected ‘int *’ but argument is of type ‘int **’
+ HIDDEN semd_t* getSemd(int *key){
+                        ~~~~~^~~
+asl.c:142:15: warning: implicit declaration of function ‘headProcQ’; did you mean ‘headBlocked’? [-Wimplicit-function-declaration]
+  pcb_t* pcb = headProcQ( &(semd->s_procQ) );
+               ^~~~~~~~~
+               headBlocked
+asl.c:142:15: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+asl.c: In function ‘initASL’:
+asl.c:166:17: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
+  INIT_LIST_HEAD(semdFree_h);  //inizializza i campi, con entrambi i campi che puntano a se stessa)
+                 ^~~~~~~~~~
+In file included from asl.c:9:
+listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
+ static inline void INIT_LIST_HEAD(struct list_head *list)
+                                   ~~~~~~~~~~~~~~~~~~^~~~
+asl.c:168:20: error: ‘semd_table’ undeclared (first use in this function); did you mean ‘semdFree_table’?
+   list_add_tail( &(semd_table[i]), &semdFree_h); //aggiungo l'i-esimo elemento della semdTable in coda
+                    ^~~~~~~~~~
+                    semdFree_table
+asl.c:168:20: note: each undeclared identifier is reported only once for each function it appears in
+sara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ 
