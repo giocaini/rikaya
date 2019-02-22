@@ -38,6 +38,7 @@
 
 #include "pcb.h"
 #include "asl.h"
+#include "types_rikaya.h"
 
 #define	MAXSEM	MAXPROC
 

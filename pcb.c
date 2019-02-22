@@ -23,7 +23,7 @@ HIDDEN void initPcbs(void){
 	HIDDEN pcb_t pcbFree_table[MAXPROC]; //Array statico contenente MAX_PROC pcb_t
 	for (int i=0; i<MAXPROC; i++){
 		pcb_t* newPcb = &pcbFree_table[i]; //Mette in newPcp l'iesimo elemento della tabella dei pcb
-		list_add_tail(&(newPcb->p_next), &(pcbFree_h)) 	//Aggiunge l'elemento in coda alla lista pcbFree
+		list_add_tail(&(newPcb->p_next), &(pcbFree_h)); 	//Aggiunge l'elemento in coda alla lista pcbFree
 	}
 }
 
