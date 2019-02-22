@@ -1,8 +1,8 @@
 #ifndef PCB_H
 #define PCB_H
 #include <umps/types.h>
-#include <types_rikaya.h>
-#include <const.h>
+#include "types_rikaya.h"
+#include "const.h"
 
 /* PCB allocation deallocation functions 1 - 3 */
 void initPcbs(void);

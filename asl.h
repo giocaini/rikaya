@@ -1,8 +1,8 @@
 #ifndef ASL_H
 #define ASL_H
 #include <umps/types.h>
-#include <types_rikaya.h>
-#include <const.h>
+#include "types_rikaya.h"
+#include "const.h"
 
 /* ASL handling functions 14 - 20 */
 semd_t* getSemd(int *key);
