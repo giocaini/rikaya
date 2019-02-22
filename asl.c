@@ -23,6 +23,7 @@ HIDDEN semd_t* getSemd(int *key){
 	semd_t* i; //per ciclare sulla lista ASL
 	list_for_each_entry(i, semd_h, s_next){		//ciclo sulla lista ASL partendo da sentinella semd_h
 		if( key == i->s_key) return container_of(semd_h.next , semd_t, s_next);
+			//semd_h.next non va bene, ritorna sempre l'elemento successivo alla sentinella
 			//### Non si può usare i.s_key perchè i è un puntatore: quindi i->s_key
 		if(i->s_next == semd_h) return NULL;
 		//Se arrivo a un elemento che ha come elemento successivo la sentinella allora sei arrivato all'ultimo e pui smettere di cercare
@@ -68,8 +69,8 @@ int insertBlocked(int *key, pcb_t* p){
  		//### list_next dà un elemento di tipo head_list non semd_t: bisogna usare la container_of
 		semd_t *new_semd = container_of(semdFree_h.next , semd_t, s_next);
 		//### da qui in poi si riparla di liste, quindi al posto di new_semd ho messo new_semd->s_next
-		list_del(new_semd->s_next);							//elimino new_semd dalla lista semdFree
-		list_add_tail(&(new_semd->s_next), &semd_h);				//aggiunge semd alla coda ASL
+		list_del(new_semd->s_next);						//elimino new_semd dalla lista semdFree
+		list_add_tail(&(new_semd->s_next), &semd_h);	//aggiunge semd alla coda ASL
 		new_semd->s_key = key							//assegno key
 			//### ho tolto la & da &key
 		mkEmptyProcQ( &(new_semd->s_procQ) );			//creo lista di pcb puntata da s_procQ
@@ -94,7 +95,8 @@ pcb_t* removeBlocked(int *key){
 
 	//caso 2.A : c'è SEMD ma non ha PCB
 	//### Caso impossibile: se SEMD è nella ASL deve avere almeno un PCB! Quindi commento l'else if
-	/* else if( list_empty( &(semd->s_procQ) ) == 1 ) return NULL; //il semd non ha processi, se lista pcb è vuota */
+	//->leggendo le specifiche della funzione 18, questo è un caso possibile. Anche se dopo qualche giro diventa inutile 
+	else if( list_empty( &(semd->s_procQ) ) == 1 ) return NULL; //il semd non ha processi, se lista pcb è vuota
 	/* elimina il SEMD dato che non ha processi?? */
 	
 	//caso 2.B: ritorna il primo PCB dalla coda dei processi bloccati 
@@ -104,12 +106,6 @@ pcb_t* removeBlocked(int *key){
 	if( list_empty( &(semd->s_procQ) )) { 		//controllo se la coda è vuota, 1->vuota
 		list_del(&semd);	//è vuota => elimino SEMD da ASL
 
-		/*devo resettare i valori del semd che poi aggiungerò alla semdFree*/
-		//### commentato perchè quei valori verranno settati poi nella insertBlocked
-		/* semd->s_next = NULL;
-		semd->s_key = ah boh;	//????????? può essere che lo lasciamo così, tanto quando lo tireremo fuori dalla semdFree la riassegnamo la key
-		semd->s_next = s_procQ;	
-		*/
 		list_add(&(semd->s_next), semdFree_h);		//aggiungo semd alla lista semdFree (indifferente se in testa o in coda)
 		//### Sostituito semd con semd->s_next
 	}
@@ -159,10 +155,8 @@ void outChildBlocked(pcb_t *p){
 		Questo metodo viene invocato una volta sola durante l’inizializzazione della struttura dati. */
 HIDDEN void initASL(void){
 
-	//ma l'elemento semdTable[MAXPROC] esiste già o la dobbiamo creare noi?
-
-	HIDDEN pcb_t pcbFree_table[MAXPROC]; //Array statico contenente MAX_PROC pcb_t
-	//tocca riempirlo sto array di strutture pcb_t
+	HIDDEN semd_t semdFree_table[MAXPROC]; //Array statico contenente MAX_PROC semd_t
+	//tocca riempirlo sto array di strutture semd_t
 
 	INIT_LIST_HEAD(semdFree_h);		//inizializza i campi, con entrambi i campi che puntano a se stessa)
 	for(int i = 0; i < MAXPROC; i++){
