@@ -44,8 +44,8 @@ HIDDEN pcb_t *allocPcb(void){
 	//Campi di tipo puntatore: imposto a NULL
 	tempPcb->p_parent = NULL;
 	tempPcb->p_semkey = NULL;
-	//Campi di tipo p_state: A cosa lo imposto????????????
-	tempPcb->p_state = ???
+	//Campi di tipo p_state: A cosa lo imposto???????????? [AIUTO]
+	//tempPcb->p_state = ??
 	//Campi di tipo intero: imposto a 0
 	tempPcb->priority = 0;
 	//Campi di tipo list_head: uso INIT_LIST_HEAD

@@ -1,24 +1,42 @@
+mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=c99 -I/usr/local/include/umps2 -c pcb.c
+
+
 sara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=c99 -I/usr/local/include/umps2 -c pcb.c
+In file included from pcb.h:5,
+                 from pcb.c:7:
+const.h:25: warning: "NULL" redefined
+ #define NULL ((void *)0)
+ 
+In file included from types_rikaya.h:5,
+                 from pcb.h:4,
+                 from pcb.c:7:
+listx.h:7: note: this is the location of the previous definition
+ #define NULL ((void *) 0)
+ 
 pcb.c:22:13: error: static declaration of ‘initPcbs’ follows non-static declaration
  HIDDEN void initPcbs(void){
              ^~~~~~~~
+In file included from pcb.c:7:
 pcb.h:8:6: note: previous declaration of ‘initPcbs’ was here
- HIDDEN void initPcbs(void);
+ void initPcbs(void);
       ^~~~~~~~
 pcb.c:31:13: error: static declaration of ‘freePcb’ follows non-static declaration
  HIDDEN void freePcb(pcb_t *p){
              ^~~~~~~
+In file included from pcb.c:7:
 pcb.h:9:6: note: previous declaration of ‘freePcb’ was here
- HIDDEN void freePcb(pcb_t *p);
+ void freePcb(pcb_t *p);
       ^~~~~~~
 pcb.c:37:15: error: static declaration of ‘allocPcb’ follows non-static declaration
  HIDDEN pcb_t *allocPcb(void){
                ^~~~~~~~
+In file included from pcb.c:7:
 pcb.h:10:8: note: previous declaration of ‘allocPcb’ was here
- HIDDEN pcb_t *allocPcb(void);
+ pcb_t *allocPcb(void);
         ^~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 pcb.c: In function ‘allocPcb’:
 listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
    const typeof( ((type *)0)->member ) *__mptr = (ptr); \
@@ -42,7 +60,8 @@ pcb.c:41:18: error: incompatible type for argument 1 of ‘list_del’
   list_del(tempPcb->p_next); //Rimuove tempPcb dalla lista dei pcbFree: NON viene deallocato!
            ~~~~~~~^~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:161:47: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
  static inline void list_del(struct list_head *entry)
                              ~~~~~~~~~~~~~~~~~~^~~~~
@@ -56,7 +75,8 @@ pcb.c:52:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
   INIT_LIST_HEAD(tempPcb->p_next);
                  ~~~~~~~^~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
  static inline void INIT_LIST_HEAD(struct list_head *list)
                                    ~~~~~~~~~~~~~~~~~~^~~~
@@ -64,7 +84,8 @@ pcb.c:53:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
   INIT_LIST_HEAD(tempPcb->p_child);
                  ~~~~~~~^~~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
  static inline void INIT_LIST_HEAD(struct list_head *list)
                                    ~~~~~~~~~~~~~~~~~~^~~~
@@ -72,7 +93,8 @@ pcb.c:54:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
   INIT_LIST_HEAD(tempPcb->p_sib);
                  ~~~~~~~^~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
  static inline void INIT_LIST_HEAD(struct list_head *list)
                                    ~~~~~~~~~~~~~~~~~~^~~~
@@ -80,23 +102,27 @@ pcb.c: At top level:
 pcb.c:64:13: error: static declaration of ‘mkEmptyProcQ’ follows non-static declaration
  HIDDEN void mkEmptyProcQ(struct list_head *head){
              ^~~~~~~~~~~~
+In file included from pcb.c:7:
 pcb.h:13:6: note: previous declaration of ‘mkEmptyProcQ’ was here
- HIDDEN void mkEmptyProcQ(struct list_head *head);
+ void mkEmptyProcQ(struct list_head *head);
       ^~~~~~~~~~~~
 pcb.c:71:12: error: static declaration of ‘emptyProcQ’ follows non-static declaration
  HIDDEN int emptyProcQ(struct list_head *head){
             ^~~~~~~~~~
+In file included from pcb.c:7:
 pcb.h:14:5: note: previous declaration of ‘emptyProcQ’ was here
- HIDDEN int emptyProcQ(struct list_head *head);
+ int emptyProcQ(struct list_head *head);
      ^~~~~~~~~~
 pcb.c:79:13: error: static declaration of ‘insertProcQ’ follows non-static declaration
  HIDDEN void insertProcQ(struct list_head *head, pcb_t *p){
              ^~~~~~~~~~~
+In file included from pcb.c:7:
 pcb.h:15:6: note: previous declaration of ‘insertProcQ’ was here
- HIDDEN void insertProcQ(struct list_head *head, pcb_t *p);
+ void insertProcQ(struct list_head *head, pcb_t *p);
       ^~~~~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 pcb.c: In function ‘insertProcQ’:
 listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
    const typeof( ((type *)0)->member ) *__mptr = (ptr); \
@@ -156,7 +182,8 @@ pcb.c:83:42: error: incompatible type for argument 1 of ‘list_prev’
     __list_add(&(p->p_next), &(list_prev(i->p_next)), &(i->p_next)); //inserisco p nella lista head tra prev di i e i
                                          ~^~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:216:67: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
  static inline struct list_head *list_prev(const struct list_head *current)
                                            ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
@@ -164,8 +191,9 @@ pcb.c: At top level:
 pcb.c:94:15: error: static declaration of ‘headProcQ’ follows non-static declaration
  HIDDEN pcb_t *headProcQ(struct list_head *head){
                ^~~~~~~~~
+In file included from pcb.c:7:
 pcb.h:16:8: note: previous declaration of ‘headProcQ’ was here
- HIDDEN pcb_t *headProcQ(struct list_head *head);
+ pcb_t *headProcQ(struct list_head *head);
         ^~~~~~~~~
 pcb.c: In function ‘headProcQ’:
 pcb.c:95:5: error: expected ‘(’ before ‘list_empty’
@@ -173,7 +201,8 @@ pcb.c:95:5: error: expected ‘(’ before ‘list_empty’
      ^~~~~~~~~~
      (
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
    const typeof( ((type *)0)->member ) *__mptr = (ptr); \
                  ^
@@ -190,8 +219,9 @@ pcb.c: At top level:
 pcb.c:104:15: error: static declaration of ‘removeProcQ’ follows non-static declaration
  HIDDEN pcb_t *removeProcQ(struct list_head *head){
                ^~~~~~~~~~~
+In file included from pcb.c:7:
 pcb.h:18:8: note: previous declaration of ‘removeProcQ’ was here
- HIDDEN pcb_t *removeProcQ(struct list_head *head);
+ pcb_t *removeProcQ(struct list_head *head);
         ^~~~~~~~~~~
 pcb.c: In function ‘removeProcQ’:
 pcb.c:105:5: error: expected ‘(’ before ‘list_empty’
@@ -199,7 +229,8 @@ pcb.c:105:5: error: expected ‘(’ before ‘list_empty’
      ^~~~~~~~~~
      (
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
    const typeof( ((type *)0)->member ) *__mptr = (ptr); \
                  ^
@@ -216,11 +247,13 @@ pcb.c: At top level:
 pcb.c:116:15: error: static declaration of ‘outProcQ’ follows non-static declaration
  HIDDEN pcb_t *outProcQ(struct list_head *head, pcb_t *p){
                ^~~~~~~~
+In file included from pcb.c:7:
 pcb.h:19:8: note: previous declaration of ‘outProcQ’ was here
- HIDDEN pcb_t *outProcQ(struct list_head *head, pcb_t *p);
+ pcb_t *outProcQ(struct list_head *head, pcb_t *p);
         ^~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 pcb.c: In function ‘outProcQ’:
 listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
    const typeof( ((type *)0)->member ) *__mptr = (ptr); \
@@ -271,15 +304,17 @@ pcb.c: At top level:
 pcb.c:132:12: error: static declaration of ‘emptyChild’ follows non-static declaration
  HIDDEN int emptyChild(pcb_t *this){
             ^~~~~~~~~~
+In file included from pcb.c:7:
 pcb.h:23:5: note: previous declaration of ‘emptyChild’ was here
- HIDDEN int emptyChild(pcb_t *this);
+ int emptyChild(pcb_t *this);
      ^~~~~~~~~~
 pcb.c: In function ‘emptyChild’:
 pcb.c:133:24: error: incompatible type for argument 1 of ‘list_empty’
   return list_empty(this->p_child); //TRUE se p_child è vuota, FALSE altrimenti
                     ~~~~^~~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:187:54: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
  static inline int list_empty(const struct list_head *head)
                               ~~~~~~~~~~~~~~~~~~~~~~~~^~~~
@@ -287,14 +322,16 @@ pcb.c: At top level:
 pcb.c:137:13: error: static declaration of ‘insertChild’ follows non-static declaration
  HIDDEN void insertChild(pcb_t *prnt, pcb_t *p){
              ^~~~~~~~~~~
+In file included from pcb.c:7:
 pcb.h:24:6: note: previous declaration of ‘insertChild’ was here
- HIDDEN void insertChild(pcb_t *prnt, pcb_t *p);
+ void insertChild(pcb_t *prnt, pcb_t *p);
       ^~~~~~~~~~~
 pcb.c:144:15: error: static declaration of ‘removeChild’ follows non-static declaration
  HIDDEN pcb_t *removeChild(pcb_t *p){
                ^~~~~~~~~~~
+In file included from pcb.c:7:
 pcb.h:25:8: note: previous declaration of ‘removeChild’ was here
- HIDDEN pcb_t *removeChild(pcb_t *p);
+ pcb_t *removeChild(pcb_t *p);
         ^~~~~~~~~~~
 pcb.c: In function ‘removeChild’:
 pcb.c:148:3: error: unknown type name ‘list_head’; use ‘struct’ keyword to refer to the type
@@ -305,7 +342,8 @@ pcb.c:148:44: error: incompatible type for argument 1 of ‘list_next’
    list_head *list_primofiglio = list_next(p->p_child); //Primo figlio: è il next della sentinella (che punta a p_sib del primo figlio)
                                            ~^~~~~~~~~
 In file included from types_rikaya.h:5,
-                 from pcb.h:4:
+                 from pcb.h:4,
+                 from pcb.c:7:
 listx.h:200:67: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
  static inline struct list_head *list_next(const struct list_head *current)
                                            ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
@@ -325,6 +363,7 @@ pcb.c: At top level:
 pcb.c:159:15: error: static declaration of ‘outChild’ follows non-static declaration
  HIDDEN pcb_t *outChild(pcb_t *p){
                ^~~~~~~~
+In file included from pcb.c:7:
 pcb.h:26:8: note: previous declaration of ‘outChild’ was here
- HIDDEN pcb_t *outChild(pcb_t *p);
+ pcb_t *outChild(pcb_t *p);
         ^~~~~~~~
