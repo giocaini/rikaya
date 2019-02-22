@@ -45,7 +45,8 @@ HIDDEN pcb_t *allocPcb(void){
 	if (list_empty(&(pcbFree_h))) return NULL; //Macro di listx.h: se pcbFree è vuoto, restituisce NULL
 
 	pcb_t* tempPcb = container_of(pcbFree_h.prev, pcb_t, p_next); //Restituisce puntatore all'ultimo elemento della pcbFree
-	list_del(tempPcb->p_next); //Rimuove tempPcb dalla lista dei pcbFree: NON viene deallocato!
+	//pcb_t* elimPcb = tempPcb->p_next;
+	list_del(&(tempPcb->p_next)); //Rimuove tempPcb dalla lista dei pcbFree: NON viene deallocato!
 
 	//Inizializzazione di tutti i campi di tempPcb
 	//Campi di tipo puntatore: imposto a NULL
