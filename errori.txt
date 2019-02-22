@@ -1,133 +1,241 @@
-sara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=c99 -I/usr/local/include/umps2 -c pcb.c
-pcb.c:12:1: error: unknown type name ‘HIDDEN’
- HIDDEN LIST_HEAD(pcbFree_h); //Macro di listx.h: inizializza la sentinella alla pcbFree. pcbFree_h è la sentinella della coda di pcb
- ^~~~~~
-pcb.c:12:1: warning: parameter names (without types) in function declaration
-pcb.c:15:7: error: expected ‘;’ before ‘void’
- HIDDEN void initPcbs(void);
-       ^~~~~
-       ;
-pcb.c:25:7: error: expected ‘;’ before ‘void’
- HIDDEN void initPcbs(void){
-       ^~~~~
-       ;
-pcb.c: In function ‘initPcbs’:
-pcb.c:26:2: error: unknown type name ‘HIDDEN’
-  HIDDEN pcb_t pcbFree_table[MAXPROC]; //Array statico contenente MAX_PROC pcb_t
-  ^~~~~~
-pcb.c:26:15: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘pcbFree_table’
-  HIDDEN pcb_t pcbFree_table[MAXPROC]; //Array statico contenente MAX_PROC pcb_t
-               ^~~~~~~~~~~~~
-pcb.c:27:18: error: ‘MAXPROC’ undeclared (first use in this function)
-  for (int i=0; i<MAXPROC; i++){
-                  ^~~~~~~
-pcb.c:27:18: note: each undeclared identifier is reported only once for each function it appears in
-pcb.c:28:3: error: unknown type name ‘pcb_t’
-   pcb_t* newPcb = &pcbFree_table[i]; //Mette in newPcp l'iesimo elemento della tabella dei pcb
-   ^~~~~
-pcb.c:28:20: error: ‘pcbFree_table’ undeclared (first use in this function)
-   pcb_t* newPcb = &pcbFree_table[i]; //Mette in newPcp l'iesimo elemento della tabella dei pcb
-                    ^~~~~~~~~~~~~
-pcb.c:29:3: warning: implicit declaration of function ‘list_add_tail’ [-Wimplicit-function-declaration]
-   list_add_tail(&(newPcb->p_next), &(pcbFree_h));  //Aggiunge l'elemento in coda alla lista pcbFree
-   ^~~~~~~~~~~~~
-pcb.c:29:25: error: request for member ‘p_next’ in something not a structure or union
-   list_add_tail(&(newPcb->p_next), &(pcbFree_h));  //Aggiunge l'elemento in coda alla lista pcbFree
-                         ^~
-pcb.c:29:38: error: ‘pcbFree_h’ undeclared (first use in this function)
-   list_add_tail(&(newPcb->p_next), &(pcbFree_h));  //Aggiunge l'elemento in coda alla lista pcbFree
-                                      ^~~~~~~~~
-pcb.c: At top level:
-pcb.c:34:7: error: expected ‘;’ before ‘void’
- HIDDEN void freePcb(pcb_t *p){
-       ^~~~~
-       ;
-pcb.c:34:21: error: unknown type name ‘pcb_t’
- HIDDEN void freePcb(pcb_t *p){
-                     ^~~~~
-pcb.c:40:1: error: unknown type name ‘HIDDEN’
- HIDDEN pcb_t *allocPcb(void){
- ^~~~~~
-pcb.c:40:14: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘*’ token
- HIDDEN pcb_t *allocPcb(void){
-              ^
-pcb.c:67:7: error: expected ‘;’ before ‘void’
- HIDDEN void mkEmptyProcQ(struct list_head *head){
-       ^~~~~
-       ;
-pcb.c:67:33: warning: ‘struct list_head’ declared inside parameter list will not be visible outside of this definition or declaration
- HIDDEN void mkEmptyProcQ(struct list_head *head){
-                                 ^~~~~~~~~
-pcb.c: In function ‘mkEmptyProcQ’:
-pcb.c:69:2: warning: implicit declaration of function ‘INIT_LIST_HEAD’; did you mean ‘LIST_HEAD’? [-Wimplicit-function-declaration]
-  INIT_LIST_HEAD(head);
-  ^~~~~~~~~~~~~~
-  LIST_HEAD
-pcb.c: At top level:
-pcb.c:74:7: error: expected ‘;’ before ‘int’
- HIDDEN int emptyProcQ(struct list_head *head){
-       ^~~~
-       ;
-pcb.c:74:30: warning: ‘struct list_head’ declared inside parameter list will not be visible outside of this definition or declaration
- HIDDEN int emptyProcQ(struct list_head *head){
-                              ^~~~~~~~~
-pcb.c: In function ‘emptyProcQ’:
-pcb.c:75:9: warning: implicit declaration of function ‘list_empty’ [-Wimplicit-function-declaration]
-  return list_empty(head); //list_empty restituisce proprio questi valori.
-         ^~~~~~~~~~
-pcb.c: At top level:
-pcb.c:82:7: error: expected ‘;’ before ‘void’
- HIDDEN void insertProcQ(struct list_head *head, pcb_t *p){
-       ^~~~~
-       ;
-pcb.c:82:49: error: unknown type name ‘pcb_t’
- HIDDEN void insertProcQ(struct list_head *head, pcb_t *p){
-                                                 ^~~~~
-pcb.c:97:1: error: unknown type name ‘HIDDEN’
- HIDDEN pcb_t *headProcQ(struct list_head *head){
- ^~~~~~
-pcb.c:97:14: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘*’ token
- HIDDEN pcb_t *headProcQ(struct list_head *head){
-              ^
-pcb.c:107:1: error: unknown type name ‘HIDDEN’
- HIDDEN pcb_t *removeProcQ(struct list_head *head){
- ^~~~~~
-pcb.c:107:14: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘*’ token
- HIDDEN pcb_t *removeProcQ(struct list_head *head){
-              ^
-pcb.c:119:1: error: unknown type name ‘HIDDEN’
- HIDDEN pcb_t *outProcQ(struct list_head *head, pcb_t *p){
- ^~~~~~
-pcb.c:119:14: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘*’ token
- HIDDEN pcb_t *outProcQ(struct list_head *head, pcb_t *p){
-              ^
-pcb.c:135:7: error: expected ‘;’ before ‘int’
- HIDDEN int emptyChild(pcb_t *this){
-       ^~~~
-       ;
-pcb.c:135:23: error: unknown type name ‘pcb_t’
- HIDDEN int emptyChild(pcb_t *this){
-                       ^~~~~
-pcb.c:140:7: error: expected ‘;’ before ‘void’
- HIDDEN void insertChild(pcb_t *prnt, pcb_t *p){
-       ^~~~~
-       ;
-pcb.c:140:25: error: unknown type name ‘pcb_t’
- HIDDEN void insertChild(pcb_t *prnt, pcb_t *p){
-                         ^~~~~
-pcb.c:140:38: error: unknown type name ‘pcb_t’
- HIDDEN void insertChild(pcb_t *prnt, pcb_t *p){
-                                      ^~~~~
-pcb.c:147:1: error: unknown type name ‘HIDDEN’
- HIDDEN pcb_t *removeChild(pcb_t *p){
- ^~~~~~
-pcb.c:147:14: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘*’ token
- HIDDEN pcb_t *removeChild(pcb_t *p){
-              ^
-pcb.c:162:1: error: unknown type name ‘HIDDEN’
- HIDDEN pcb_t *outChild(pcb_t *p){
- ^~~~~~
-pcb.c:162:14: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘*’ token
- HIDDEN pcb_t *outChild(pcb_t *p){
-              ^
+ara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=c99 -I/usr/local/include/umps2 -c pcb.c
+In file included from pcb.c:9:
+pcb.c: In function ‘allocPcb’:
+listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
+   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
+                 ^
+pcb.c:47:19: note: in expansion of macro ‘container_of’
+  pcb_t* tempPcb = container_of(pcbFree_h.prev, pcb_t, p_next); //Restituisce puntatore all'ultimo elemento della pcbFree
+                   ^~~~~~~~~~~~
+listx.h:32:21: error: ‘__mptr’ undeclared (first use in this function)
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+                     ^~~~~~
+pcb.c:47:19: note: in expansion of macro ‘container_of’
+  pcb_t* tempPcb = container_of(pcbFree_h.prev, pcb_t, p_next); //Restituisce puntatore all'ultimo elemento della pcbFree
+                   ^~~~~~~~~~~~
+listx.h:32:21: note: each undeclared identifier is reported only once for each function it appears in
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+                     ^~~~~~
+pcb.c:47:19: note: in expansion of macro ‘container_of’
+  pcb_t* tempPcb = container_of(pcbFree_h.prev, pcb_t, p_next); //Restituisce puntatore all'ultimo elemento della pcbFree
+                   ^~~~~~~~~~~~
+pcb.c:48:18: error: incompatible type for argument 1 of ‘list_del’
+  list_del(tempPcb->p_next); //Rimuove tempPcb dalla lista dei pcbFree: NON viene deallocato!
+           ~~~~~~~^~~~~~~~
+In file included from pcb.c:9:
+listx.h:161:47: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
+ static inline void list_del(struct list_head *entry)
+                             ~~~~~~~~~~~~~~~~~~^~~~~
+pcb.c:59:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
+  INIT_LIST_HEAD(tempPcb->p_next);
+                 ~~~~~~~^~~~~~~~
+In file included from pcb.c:9:
+listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
+ static inline void INIT_LIST_HEAD(struct list_head *list)
+                                   ~~~~~~~~~~~~~~~~~~^~~~
+pcb.c:60:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
+  INIT_LIST_HEAD(tempPcb->p_child);
+                 ~~~~~~~^~~~~~~~~
+In file included from pcb.c:9:
+listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
+ static inline void INIT_LIST_HEAD(struct list_head *list)
+                                   ~~~~~~~~~~~~~~~~~~^~~~
+pcb.c:61:24: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
+  INIT_LIST_HEAD(tempPcb->p_sib);
+                 ~~~~~~~^~~~~~~
+In file included from pcb.c:9:
+listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
+ static inline void INIT_LIST_HEAD(struct list_head *list)
+                                   ~~~~~~~~~~~~~~~~~~^~~~
+pcb.c: In function ‘insertProcQ’:
+listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
+   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
+                 ^
+listx.h:263:13: note: in expansion of macro ‘container_of’
+  for (pos = container_of((head)->next, typeof(*pos), member);      \
+             ^~~~~~~~~~~~
+pcb.c:88:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:263:40: warning: implicit declaration of function ‘typeof’ [-Wimplicit-function-declaration]
+  for (pos = container_of((head)->next, typeof(*pos), member);      \
+                                        ^~~~~~
+listx.h:32:4: note: in definition of macro ‘container_of’
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+    ^~~~
+pcb.c:88:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:32:10: error: expected expression before ‘)’ token
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+          ^
+listx.h:263:13: note: in expansion of macro ‘container_of’
+  for (pos = container_of((head)->next, typeof(*pos), member);      \
+             ^~~~~~~~~~~~
+pcb.c:88:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:32:21: error: ‘__mptr’ undeclared (first use in this function)
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+                     ^~~~~~
+listx.h:263:13: note: in expansion of macro ‘container_of’
+  for (pos = container_of((head)->next, typeof(*pos), member);      \
+             ^~~~~~~~~~~~
+pcb.c:88:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
+   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
+                 ^
+listx.h:265:8: note: in expansion of macro ‘container_of’
+  pos = container_of(pos->member.next, typeof(*pos), member))
+        ^~~~~~~~~~~~
+pcb.c:88:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:32:10: error: expected expression before ‘)’ token
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+          ^
+listx.h:265:8: note: in expansion of macro ‘container_of’
+  pos = container_of(pos->member.next, typeof(*pos), member))
+        ^~~~~~~~~~~~
+pcb.c:88:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+pcb.c:90:42: error: incompatible type for argument 1 of ‘list_prev’
+    __list_add(&(p->p_next), &(list_prev(i->p_next)), &(i->p_next)); //inserisco p nella lista head tra prev di i e i
+                                         ~^~~~~~~~
+In file included from pcb.c:9:
+listx.h:216:67: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
+ static inline struct list_head *list_prev(const struct list_head *current)
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+pcb.c: In function ‘headProcQ’:
+pcb.c:102:5: error: expected ‘(’ before ‘list_empty’
+  if list_empty(head)
+     ^~~~~~~~~~
+     (
+In file included from pcb.c:9:
+listx.h:31:17: error: expected declaration /* DICHIARAZIONI
+HIDDEN void initPcbs(void);
+*/
+specifiers or ‘...’ before ‘(’ token
+   const typeof( ((type *)0)->member ) *__m/* DICHIARAZIONI
+HIDDEN void initPcbs(void);
+*/
+ptr = (ptr); \
+                 ^/* DICHIARAZIONI
+HIDDEN void initPcbs(void);
+*/
+
+pcb.c:105:19: note: in expansion of macro ‘/* DICHIARAZIONI
+HIDDEN void initPcbs(void);
+*/
+container_of’
+  pcb_t* tempPcb = container_of(pcbFree_h.n/* DICHIARAZIONI
+HIDDEN void initPcbs(void);
+*/
+ext, pcb_t, p_next); //Restituisce puntatore al primo elemento della pcbFree (non lo rimuove!)
+                   ^~~~~~~~~~~~
+listx.h:32:21: error: ‘__mptr’ undeclared (first use in this function)
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+                     ^~~~~~
+pcb.c:105:19: note: in expansion of macro ‘container_of’
+  pcb_t* tempPcb = container_of(pcbFree_h.next, pcb_t, p_next); //Restituisce puntatore al primo elemento della pcbFree (non lo rimuove!)
+                   ^~~~~~~~~~~~
+pcb.c: In function ‘removeProcQ’:
+pcb.c:112:5: error: expected ‘(’ before ‘list_empty’
+  if list_empty(head)
+     ^~~~~~~~~~
+     (
+In file included from pcb.c:9:
+listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
+   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
+                 ^
+pcb.c:115:19: note: in expansion of macro ‘container_of’
+  pcb_t* tempPcb = container_of(pcbFree_h.next, pcb_t, p_next); //Restituisce puntatore al primo elemento della pcbFree (non lo rimuove!)
+                   ^~~~~~~~~~~~
+listx.h:32:21: error: ‘__mptr’ undeclared (first use in this function)
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+                     ^~~~~~
+pcb.c:115:19: note: in expansion of macro ‘container_of’
+  pcb_t* tempPcb = container_of(pcbFree_h.next, pcb_t, p_next); //Restituisce puntatore al primo elemento della pcbFree (non lo rimuove!)
+                   ^~~~~~~~~~~~
+pcb.c: In function ‘outProcQ’:
+listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
+   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
+                 ^
+listx.h:263:13: note: in expansion of macro ‘container_of’
+  for (pos = container_of((head)->next, typeof(*pos), member);      \
+             ^~~~~~~~~~~~
+pcb.c:125:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:32:10: error: expected expression before ‘)’ token
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+          ^
+listx.h:263:13: note: in expansion of macro ‘container_of’
+  for (pos = container_of((head)->next, typeof(*pos), member);      \
+             ^~~~~~~~~~~~
+pcb.c:125:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:32:21: error: ‘__mptr’ undeclared (first use in this function)
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+                     ^~~~~~
+listx.h:263:13: note: in expansion of macro ‘container_of’
+  for (pos = container_of((head)->next, typeof(*pos), member);      \
+             ^~~~~~~~~~~~
+pcb.c:125:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
+   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
+                 ^
+listx.h:265:8: note: in expansion of macro ‘container_of’
+  pos = container_of(pos->member.next, typeof(*pos), member))
+        ^~~~~~~~~~~~
+pcb.c:125:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+listx.h:32:10: error: expected expression before ‘)’ token
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+          ^
+listx.h:265:8: note: in expansion of macro ‘container_of’
+  pos = container_of(pos->member.next, typeof(*pos), member))
+        ^~~~~~~~~~~~
+pcb.c:125:2: note: in expansion of macro ‘list_for_each_entry’
+  list_for_each_entry(i, head, p_next){
+  ^~~~~~~~~~~~~~~~~~~
+pcb.c: In function ‘emptyChild’:
+pcb.c:140:24: error: incompatible type for argument 1 of ‘list_empty’
+  return list_empty(this->p_child); //TRUE se p_child è vuota, FALSE altrimenti
+                    ~~~~^~~~~~~~~
+In file included from pcb.c:9:
+listx.h:187:54: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
+ static inline int list_empty(const struct list_head *head)
+                              ~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+pcb.c: In function ‘removeChild’:
+pcb.c:155:3: error: unknown type name ‘list_head’; use ‘struct’ keyword to refer to the type
+   list_head *list_primofiglio = list_next(p->p_child); //Primo figlio: è il next della sentinella (che punta a p_sib del primo figlio)
+   ^~~~~~~~~
+   struct 
+pcb.c:155:44: error: incompatible type for argument 1 of ‘list_next’
+   list_head *list_primofiglio = list_next(p->p_child); //Primo figlio: è il next della sentinella (che punta a p_sib del primo figlio)
+                                           ~^~~~~~~~~
+In file included from pcb.c:9:
+listx.h:200:67: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
+ static inline struct list_head *list_next(const struct list_head *current)
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+listx.h:31:17: error: expected declaration specifiers or ‘...’ before ‘(’ token
+   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
+                 ^
+pcb.c:157:24: note: in expansion of macro ‘container_of’
+   pcb_t *primofiglio = container_of(list_primofiglio, pcb_t, p_sib); //Ho il pcb del primo figlio
+                        ^~~~~~~~~~~~
+listx.h:32:21: error: ‘__mptr’ undeclared (first use in this function)
+   (type *)( (char *)__mptr - offsetof(type,member) );})
+                     ^~~~~~
+pcb.c:157:24: note: in expansion of macro ‘container_of’
+   pcb_t *primofiglio = container_of(list_primofiglio, pcb_t, p_sib); //Ho il pcb del primo figlio
+                        ^~~~~~~~~~~~
 sara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ 
