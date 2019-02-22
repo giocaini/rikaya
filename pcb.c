@@ -4,6 +4,8 @@
 /* Ultimo agg: Lun 11/02 			*/
 /************************************/
 
+#include "pcb.h"
+
 // Scelte progettuali:
 // - La lista pcbFree ha gli elementi inseriti in coda, non in testa
 
