@@ -20,7 +20,7 @@ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=gnu11 -fno-stack-protector -I /usr
 mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=gnu11 -fno-stack-protector -I /usr/local/include/umps2 -c p1test_rikaya_v0.c
 mipsel-linux-gnu-ld -o kernel pcb.o asl.o p1test_rikaya_v0.o /usr/local/lib/umps2/crtso.o /usr/local/lib/umps2/libumps.o -nostdlib -G0 -T /usr/local/share/umps2/umpscore.ldscript
 
-Flag gcc
+Flag gcc:
 -fno-stack-protector ->alle opzioni di gcc (non di ld) e ricompila tutto
 -w -> toglie i warning
 

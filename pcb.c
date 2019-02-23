@@ -103,9 +103,15 @@ pcb_t *headProcQ(struct list_head *head){
 	if (list_empty(head))
 		return NULL;
 	//Nella lista c'è almeno un elemento: restituisco il primo (priorità massima)
-	pcb_t* tempPcb = container_of(pcbFree_h.next, pcb_t, p_next); //Restituisce puntatore al primo elemento della pcbFree (non lo rimuove!)
-	return tempPcb;
+
+	//pcb_t* tempPcb = container_of(head.next, pcb_t, p_next); //Restituisce puntatore al primo elemento della pcbFree (non lo rimuove!)
+	else{
+		pcb_t* tempPcb = container_of( list_next(head) , pcb_t, p_next);
+		return tempPcb;
+	}
 }
+//static inline struct list_head *list_next(&(head->p_next));
+
 
 /* 8 - 	Rimuove il primo elemento dalla coda dei processi puntata da head. Ritorna NULL se la coda è vuota.
 		Altrimenti ritorna il puntatore all’elemento rimosso dalla lista. */
