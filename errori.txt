@@ -1,98 +1,123 @@
-sara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=gnu11 -I/usr/local/include/umps2 -c asl.c
-asl.c: In function ‘getSemd’:
-asl.c:27:17: error: incompatible type for argument 1 of ‘list_empty’
-  if (list_empty(semd_h)) return NULL;   //se ASL è vuota -> NULL
-                 ^~~~~~
-In file included from asl.c:9:
-listx.h:187:54: note: expected ‘const struct list_head *’ but argument is of type ‘struct list_head’
- static inline int list_empty(const struct list_head *head)
-                              ~~~~~~~~~~~~~~~~~~~~~~~~^~~~
-listx.h:263:32: error: invalid type argument of ‘->’ (have ‘struct list_head’)
-  for (pos = container_of((head)->next, typeof(*pos), member);      \
-                                ^~
-listx.h:31:50: note: in definition of macro ‘container_of’
-   const typeof( ((type *)0)->member ) *__mptr = (ptr); \
-                                                  ^~~
-asl.c:29:2: note: in expansion of macro ‘list_for_each_entry’
-  list_for_each_entry(i, semd_h, s_next){  //ciclo sulla lista ASL partendo da sentinella semd_h
-  ^~~~~~~~~~~~~~~~~~~
-listx.h:264:15: error: invalid operands to binary != (have ‘struct list_head *’ and ‘struct list_head’)
-  &pos->member != (head);        \
-               ^~
-asl.c:29:2: note: in expansion of macro ‘list_for_each_entry’
-  list_for_each_entry(i, semd_h, s_next){  //ciclo sulla lista ASL partendo da sentinella semd_h
-  ^~~~~~~~~~~~~~~~~~~
-asl.c:33:16: error: invalid operands to binary == (have ‘struct list_head’ and ‘struct list_head’)
-   if(i->s_next == semd_h) return NULL;
-      ~~~~~~~~~ ^~
-asl.c: In function ‘insertBlocked’:
-asl.c:50:3: warning: implicit declaration of function ‘insertProcQ’; did you mean ‘insertBlocked’? [-Wimplicit-function-declaration]
-   insertProcQ( &(semd->s_procQ) , p); //aggiunge il PCB nella lista in base alla sua priorità
-   ^~~~~~~~~~~
-   insertBlocked
-asl.c:77:20: error: incompatible type for argument 1 of ‘list_del’
-   list_del(new_semd->s_next);      //elimino new_semd dalla lista semdFree
-            ~~~~~~~~^~~~~~~~
-In file included from asl.c:9:
-listx.h:161:47: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
- static inline void list_del(struct list_head *entry)
-                             ~~~~~~~~~~~~~~~~~~^~~~~
-asl.c:79:24: error: expected ‘;’ before ‘mkEmptyProcQ’
-   new_semd->s_key = key       //assegno key
-                        ^
-                        ;
-asl.c:81:3:
-   mkEmptyProcQ( &(new_semd->s_procQ) );   //creo lista di pcb puntata da s_procQ
-   ~~~~~~~~~~~~          
-asl.c: In function ‘removeBlocked’:
-asl.c:108:19: warning: implicit declaration of function ‘removeProcQ’; did you mean ‘removeBlocked’? [-Wimplicit-function-declaration]
-  pcb_t* pcb_tmp = removeProcQ( &(semd->s_procQ) ); //rimuovo il primo pcb dalla coda
-                   ^~~~~~~~~~~
-                   removeBlocked
-asl.c:108:19: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-asl.c:112:12: warning: passing argument 1 of ‘list_del’ from incompatible pointer type [-Wincompatible-pointer-types]
-   list_del(&semd); //è vuota => elimino SEMD da ASL
-            ^~~~~
-In file included from asl.c:9:
-listx.h:161:47: note: expected ‘struct list_head *’ but argument is of type ‘semd_t **’ {aka ‘struct semd_t **’}
- static inline void list_del(struct list_head *entry)
-                             ~~~~~~~~~~~~~~~~~~^~~~~
-asl.c:114:29: error: incompatible type for argument 2 of ‘list_add’
-   list_add(&(semd->s_next), semdFree_h);  //aggiungo semd alla lista semdFree (indifferente se in testa o in coda)
-                             ^~~~~~~~~~
-In file included from asl.c:9:
-listx.h:122:70: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
- static inline void list_add(struct list_head *new, struct list_head *head)
-                                                    ~~~~~~~~~~~~~~~~~~^~~~
-asl.c: In function ‘outBlocked’:
-asl.c:128:15: warning: implicit declaration of function ‘outProcQ’; did you mean ‘outBlocked’? [-Wimplicit-function-declaration]
-  pcb_t* pcb = outProcQ( &(semd->s_procQ), p); //elimina il PCB puntato da p, nella coda puntata da semd->s_procQ
+In file included from pcb.c:9:
+pcb.c:16:18: error: redefinition of ‘pcbFree_h’
+ HIDDEN LIST_HEAD(pcbFree_h); //Macro di listx.h: inizializza la sentinella alla pcbFree. pcbFree_h è la sentinella della coda di pcb
+                  ^~~~~~~~~
+listx.h:78:19: note: in definition of macro ‘LIST_HEAD’
+  struct list_head name = LIST_HEAD_INIT(name)
+                   ^~~~
+pcb.c:16:18: note: previous definition of ‘pcbFree_h’ was here
+ HIDDEN LIST_HEAD(pcbFree_h); //Macro di listx.h: inizializza la sentinella alla pcbFree. pcbFree_h è la sentinella della coda di pcb
+                  ^~~~~~~~~
+listx.h:78:19: note: in definition of macro ‘LIST_HEAD’
+  struct list_head name = LIST_HEAD_INIT(name)
+                   ^~~~
+pcb.c:30:13: error: redefinition of ‘initPcbs’
+ HIDDEN void initPcbs(void){
+             ^~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:30:13: note: previous definition of ‘initPcbs’ was here
+ HIDDEN void initPcbs(void){
+             ^~~~~~~~
+pcb.c:39:13: error: redefinition of ‘freePcb’
+ HIDDEN void freePcb(pcb_t *p){
+             ^~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:39:13: note: previous definition of ‘freePcb’ was here
+ HIDDEN void freePcb(pcb_t *p){
+             ^~~~~~~
+pcb.c:45:15: error: redefinition of ‘allocPcb’
+ HIDDEN pcb_t *allocPcb(void){
                ^~~~~~~~
-               outBlocked
-asl.c:128:15: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-asl.c: In function ‘headBlocked’:
-asl.c:138:26: warning: passing argument 1 of ‘getSemd’ from incompatible pointer type [-Wincompatible-pointer-types]
-  semd_t* semd =  getSemd(&key);  //prendo il SEMD associato alla key
-                          ^~~~
-asl.c:25:29: note: expected ‘int *’ but argument is of type ‘int **’
- HIDDEN semd_t* getSemd(int *key){
-                        ~~~~~^~~
-asl.c:142:15: warning: implicit declaration of function ‘headProcQ’; did you mean ‘headBlocked’? [-Wimplicit-function-declaration]
-  pcb_t* pcb = headProcQ( &(semd->s_procQ) );
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:45:15: note: previous definition of ‘allocPcb’ was here
+ HIDDEN pcb_t *allocPcb(void){
+               ^~~~~~~~
+pcb.c:73:13: error: redefinition of ‘mkEmptyProcQ’
+ HIDDEN void mkEmptyProcQ(struct list_head *head){
+             ^~~~~~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:73:13: note: previous definition of ‘mkEmptyProcQ’ was here
+ HIDDEN void mkEmptyProcQ(struct list_head *head){
+             ^~~~~~~~~~~~
+pcb.c:80:12: error: redefinition of ‘emptyProcQ’
+ HIDDEN int emptyProcQ(struct list_head *head){
+            ^~~~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:80:12: note: previous definition of ‘emptyProcQ’ was here
+ HIDDEN int emptyProcQ(struct list_head *head){
+            ^~~~~~~~~~
+pcb.c:88:13: error: redefinition of ‘insertProcQ’
+ HIDDEN void insertProcQ(struct list_head *head, pcb_t *p){
+             ^~~~~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:88:13: note: previous definition of ‘insertProcQ’ was here
+ HIDDEN void insertProcQ(struct list_head *head, pcb_t *p){
+             ^~~~~~~~~~~
+pcb.c:106:15: error: redefinition of ‘headProcQ’
+ HIDDEN pcb_t *headProcQ(struct list_head *head){
                ^~~~~~~~~
-               headBlocked
-asl.c:142:15: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
-asl.c: In function ‘initASL’:
-asl.c:166:17: error: incompatible type for argument 1 of ‘INIT_LIST_HEAD’
-  INIT_LIST_HEAD(semdFree_h);  //inizializza i campi, con entrambi i campi che puntano a se stessa)
-                 ^~~~~~~~~~
-In file included from asl.c:9:
-listx.h:91:53: note: expected ‘struct list_head *’ but argument is of type ‘struct list_head’
- static inline void INIT_LIST_HEAD(struct list_head *list)
-                                   ~~~~~~~~~~~~~~~~~~^~~~
-asl.c:168:20: error: ‘semd_table’ undeclared (first use in this function); did you mean ‘semdFree_table’?
-   list_add_tail( &(semd_table[i]), &semdFree_h); //aggiungo l'i-esimo elemento della semdTable in coda
-                    ^~~~~~~~~~
-                    semdFree_table
-asl.c:168:20: note: each undeclared identifier is reported only once for each function it appears in
-sara@gianni:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ 
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:106:15: note: previous definition of ‘headProcQ’ was here
+ HIDDEN pcb_t *headProcQ(struct list_head *head){
+               ^~~~~~~~~
+pcb.c:116:15: error: redefinition of ‘removeProcQ’
+ HIDDEN pcb_t *removeProcQ(struct list_head *head){
+               ^~~~~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:116:15: note: previous definition of ‘removeProcQ’ was here
+ HIDDEN pcb_t *removeProcQ(struct list_head *head){
+               ^~~~~~~~~~~
+pcb.c:128:15: error: redefinition of ‘outProcQ’
+ HIDDEN pcb_t *outProcQ(struct list_head *head, pcb_t *p){
+               ^~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:128:15: note: previous definition of ‘outProcQ’ was here
+ HIDDEN pcb_t *outProcQ(struct list_head *head, pcb_t *p){
+               ^~~~~~~~
+pcb.c:144:12: error: redefinition of ‘emptyChild’
+ HIDDEN int emptyChild(pcb_t *this){
+            ^~~~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:144:12: note: previous definition of ‘emptyChild’ was here
+ HIDDEN int emptyChild(pcb_t *this){
+            ^~~~~~~~~~
+pcb.c:149:13: error: redefinition of ‘insertChild’
+ HIDDEN void insertChild(pcb_t *prnt, pcb_t *p){
+             ^~~~~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:149:13: note: previous definition of ‘insertChild’ was here
+ HIDDEN void insertChild(pcb_t *prnt, pcb_t *p){
+             ^~~~~~~~~~~
+pcb.c:156:15: error: redefinition of ‘removeChild’
+ HIDDEN pcb_t *removeChild(pcb_t *p){
+               ^~~~~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:156:15: note: previous definition of ‘removeChild’ was here
+ HIDDEN pcb_t *removeChild(pcb_t *p){
+               ^~~~~~~~~~~
+pcb.c:172:15: error: redefinition of ‘outChild’
+ HIDDEN pcb_t *outChild(pcb_t *p){
+               ^~~~~~~~
+In file included from pcb.h:6,
+                 from pcb.c:11:
+pcb.c:172:15: note: previous definition of ‘outChild’ was here
+ HIDDEN pcb_t *outChild(pcb_t *p){
+               ^~~~~~~~
+
+
+
+
+
+mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -I/usr/local/include/umps2 -c pcb.c

@@ -9,6 +9,7 @@
 #include "listx.h"
 #include "types_rikaya.h"
 
+
 /**************************/
 /* ASL handling functions */
 /**************************/
@@ -31,7 +32,7 @@ HIDDEN semd_t* getSemd(int *key){
 			//container_of(semd_h.next , semd_t, s_next);
 			//semd_h.next non va bene, ritorna sempre l'elemento successivo alla sentinella
 			//### Non si può usare i.s_key perchè i è un puntatore: quindi i->s_key
-		if(list_next(i) == &semd_h) return NULL;
+		if(&(i->s_next) == &semd_h) return NULL;
 		//Se arrivo a un elemento che ha come elemento successivo la sentinella allora sei arrivato all'ultimo e pui smettere di cercare
 	}
 }
