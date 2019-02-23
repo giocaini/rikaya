@@ -44,22 +44,3 @@ clean :
 # Pattern rule for assembly modules
 %.o : %.S
 	$(CC) $(CFLAGS) -c -o $@ $<
-
-
-
-Comunque, se si interpreta quello che fa sto makefile è:
-
-$(LD) -o $@ $^ $(LDFLAGS)    ->arabo $(LD) va a prendere la LD che è una variabile definita all'inizio, e così via..
-
-mipsel-linux-gnu-ld -o p1test_rikaya_v0.o  -G 0 -nostdlib -T /usr/local/share/umps2/umpscore.ldscript
-
-il percorso di umpscore.ldscript dovrebbe essere lo stesso per tutti quando installi umps2
-
-
-Scusate ma nel asl.c non è inclusa asl.h!
-da errore se lo includi, non sappiamo bene come gestire la cosa
-Ah ok..
-
-Capito!
-
-Comunque in asl.c va inclusa per forza asl.h! Forse gli errori che dà sono da risolvere in altri modi..LD

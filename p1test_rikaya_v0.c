@@ -34,10 +34,10 @@
 
 #include "const.h"
 #include "listx.h"
+#include "types_rikaya.h"
 #include <umps/libumps.h>
 #include "pcb.h"
 #include "asl.h"
-#include "types_rikaya.h"
 
 #define	MAXSEM	MAXPROC
 

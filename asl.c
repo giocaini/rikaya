@@ -5,6 +5,7 @@
 /************************************/
 
 #include "asl.h"
+#include "pcb.h"
 
 /**************************/
 /* ASL handling functions */
@@ -98,12 +99,10 @@ HIDDEN pcb_t* removeBlocked(int *key){
 
 	//caso 2.C: controlli per vedere se eliminare semd da ASL
 	if( list_empty( &(semd->s_procQ) )) { 		//controllo se la coda è vuota, 1->vuota
-		list_del(&semd);	//è vuota => elimino SEMD da ASL
-
+		list_del(&(semd->s_next));	//è vuota => elimino SEMD da ASL
 		list_add(&(semd->s_next), &(semdFree_h));		//aggiungo semd alla lista semdFree (indifferente se in testa o in coda)
 		//### Sostituito semd con semd->s_next
 	}
-
 	return pcb_tmp;		//ritorna il puntatore al primo processo bloccato del semd
 }
 
@@ -140,8 +139,9 @@ HIDDEN pcb_t* headBlocked(int *key){
 		i processi che hanno come avo p) dalle eventuali code dei semafori su cui sono bloccati.*/
 HIDDEN void outChildBlocked(pcb_t *p){
 	pcb_t * pcb = outBlocked(p); //Tolgo il pcb dalla coda del semd su cui è bloccato
-	if (pcb == NULL) return; //ERRORE!!
-	if (empty_child(p)) return; //Caso base: pcb non ha figli --> finisce
+	if (pcb == NULL) return; //ERRORE!! 
+	//Ho sistemato la 142: c'era empty_child al posto di emptyCHild
+	if (emptyChild(p)) return; //Caso base: pcb non ha figli --> finisce
 	else {	//Pcb ha dei figli: per ogni figlio richiamo la outChildBlocked ricorsivamente
 		pcb_t * i; //Elemento del ciclo
 		list_for_each_entry(i, &(pcb->p_child), p_sib) {
