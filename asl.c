@@ -31,6 +31,7 @@ HIDDEN semd_t* getSemd(int *key){
 			//### Non si può usare i.s_key perchè i è un puntatore: quindi i->s_key
 		if(&(i->s_next) == &semd_h) return NULL;
 		//Se arrivo a un elemento che ha come elemento successivo la sentinella allora sei arrivato all'ultimo e pui smettere di cercare
+		else return NULL;
 	}
 }
 
@@ -40,7 +41,7 @@ HIDDEN semd_t* getSemd(int *key){
         nella ASL, settando i campi in maniera opportuna (i.e. key e s_procQ). Se non 
         è possibile allocare un nuovo SEMD perché la lista di quelli liberi è vuota,
         restituisce TRUE. In tutti gli altri casi, restituisce FALSE. */
-HIDDEN int insertBlocked(int *key, pcb_t* p){
+int insertBlocked(int *key, pcb_t* p){
 	
 	semd_t* semd =  getSemd(key); //### La getSemd vuole un puntatore ad intero, quindi si può mettere key, non &key
 
@@ -79,7 +80,7 @@ HIDDEN int insertBlocked(int *key, pcb_t* p){
 		Altrimenti, restituisce l’elemento rimosso. Se la coda dei processi bloccati per
 		il semaforo diventa vuota, rimuove il descrittore corrispondente dalla ASL e lo 
 		inserisce nella coda dei descrittori liberi (semdFree). */
-HIDDEN pcb_t* removeBlocked(int *key){
+pcb_t* removeBlocked(int *key){
 
 	semd_t* semd = getSemd(key);
 
@@ -109,7 +110,7 @@ HIDDEN pcb_t* removeBlocked(int *key){
 /* 17 -	Rimuove il PCB puntato da p dalla coda del semaforo su cui è bloccato (indicato da 
 		p->p_semKey). Se il PCB non compare in tale coda, allora restituisce NULL (condizione di errore).
 		Altrimenti, restituisce p.*/
-HIDDEN pcb_t* outBlocked(pcb_t *p){
+pcb_t* outBlocked(pcb_t *p){
 	
 	int *key = p->p_semkey;	//assegno la chiave del pcb ad un valore int* (passaggio anche inutile)
 	semd_t* semd = getSemd(key);	//recupero il SEMD corrispondente alla key
@@ -121,7 +122,7 @@ HIDDEN pcb_t* outBlocked(pcb_t *p){
 /* 18 -	Restituisce (senza rimuovere) il puntatore al PCB che si trova in testa alla coda dei
 		processi associata al SEMD con chiave key. Ritorna NULL se il SEMD non compare nella ASL oppure
 		se compare ma la sua coda dei processi è vuota. */
-HIDDEN pcb_t* headBlocked(int *key){
+pcb_t* headBlocked(int *key){
 
 	semd_t* semd =  getSemd(key);		//prendo il SEMD associato alla key
 
@@ -137,7 +138,7 @@ HIDDEN pcb_t* headBlocked(int *key){
 /* 19 - Rimuove il PCB puntato da p dalla coda del semaforo su cui è bloccato (indicato da
 		p->p_semKey). Inoltre, elimina tutti i processi dell’albero radicato in p (ossia tutti
 		i processi che hanno come avo p) dalle eventuali code dei semafori su cui sono bloccati.*/
-HIDDEN void outChildBlocked(pcb_t *p){
+void outChildBlocked(pcb_t *p){
 	pcb_t * pcb = outBlocked(p); //Tolgo il pcb dalla coda del semd su cui è bloccato
 	if (pcb == NULL) return; //ERRORE!! 
 	//Ho sistemato la 142: c'era empty_child al posto di emptyCHild
@@ -160,7 +161,7 @@ HIDDEN void outChildBlocked(pcb_t *p){
 
 /* 20 -	Inizializza la lista dei semdFree in modo da contenere tutti gli elementi della semdTable.
 		Questo metodo viene invocato una volta sola durante l’inizializzazione della struttura dati. */
-HIDDEN void initASL(void){
+void initASL(void){
 
 	HIDDEN semd_t semdFree_table[MAXPROC]; //Array statico contenente MAX_PROC semd_t
 
