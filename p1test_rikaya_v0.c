@@ -35,7 +35,6 @@
 #include "const.h"
 #include "listx.h"
 #include <umps/libumps.h>
-
 #include "pcb.h"
 #include "asl.h"
 #include "types_rikaya.h"

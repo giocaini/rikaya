@@ -4,11 +4,7 @@
 /* Ultimo agg: Gio 07/02 			*/
 /************************************/
 
-#define	HIDDEN static
-#include "const.h"
-#include "listx.h"
-#include "types_rikaya.h"
-
+#include "asl.h"
 
 /**************************/
 /* ASL handling functions */

@@ -2,16 +2,16 @@
 #define ASL_H
 #include <umps/types.h>
 #include "types_rikaya.h"
-#include "const.h"
+#include "pcb.h"
 
 /* ASL handling functions 14 - 20 */
-semd_t* getSemd(int *key);
-void initASL();
+HIDDEN semd_t* getSemd(int *key);
+HIDDEN void initASL();
 
-int insertBlocked(int *key,pcb_t* p);
-pcb_t* removeBlocked(int *key);
-pcb_t* outBlocked(pcb_t *p);
-pcb_t* headBlocked(int *key);
-void outChildBlocked(pcb_t *p);
+HIDDEN int insertBlocked(int *key,pcb_t*p);
+HIDDEN pcb_t* removeBlocked(int *key);
+HIDDEN pcb_t* outBlocked(pcb_t *p);
+HIDDEN pcb_t* headBlocked(int *key);
+HIDDEN void outChildBlocked(pcb_t *p);
 
 #endif

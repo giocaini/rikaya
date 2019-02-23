@@ -14,6 +14,12 @@ else
     UMPS2_DIR_PREFIX = /usr/local
 endif
 
+HO SPOSTATO TUTTO NEL MAKEFILE 
+
+YES!
+
+
+
 UMPS2_DATA_DIR = $(UMPS2_DIR_PREFIX)/share/umps2
 UMPS2_INCLUDE_DIR = $(UMPS2_DIR_PREFIX)/include/umps2
 
@@ -35,7 +41,7 @@ all : kernel.core.umps
 kernel.core.umps : kernel
 	umps2-elf2umps -k $<
 
-kernel : p1test_rikaya_v0.o asl.o pcb.o libumps.o ///QUI CI VA ALTRA ROBA DIREI, OVVERO GLI ALTRI .o giusto?
+kernel : p1test_rikaya_v0.o asl.o pcb.o libumps.o
 	$(LD) -o $@ $^ $(LDFLAGS)
 
 clean :

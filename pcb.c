@@ -4,11 +4,7 @@
 /* Ultimo agg: Lun 11/02 			*/
 /************************************/
 
-#define	HIDDEN static
-#include "const.h"
-#include "listx.h"
-#include "types_rikaya.h"
-
+#include "pcb.h"
 
 // Scelte progettuali:
 // - La lista pcbFree ha gli elementi inseriti in coda, non in testa

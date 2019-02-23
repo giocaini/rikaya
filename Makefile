@@ -1,35 +1,65 @@
-UARM_H		= listx.h /usr/include/uarm/libuarm.h /usr/include/uarm/uARMconst.h /usr/include/uarm/uARMtypes.h /usr/include/uarm/arch.h
-PHASE1_H 	= pcb.h asl.h
-CONST_H		= const.h
-OBJECTS		= pcb.o asl.o p1test_rikaya_v0.o
-UARM_LIBS	= /usr/include/uarm/ldscripts/elf32ltsarm.h.uarmcore.x -o mika	 /usr/include/uarm/crtso.o /usr/include/uarm/libuarm.o
+# Cross toolchain variables
+# If these are not in your path, you can make them absolute.
+XT_PRG_PREFIX = mipsel-linux-gnu-
+CC = $(XT_PRG_PREFIX)gcc
+LD = $(XT_PRG_PREFIX)ld
 
-Però si può adattare..
+# uMPS2-related paths
 
-Se si fa un match dei due, si riesce.. (speriamo)
+# Simplistic search for the umps2 install. prefix. If you have umps2
+# installed on some weird location, set UMPS2_DIR_PREFIX by hand.
+ifneq ($(wildcard /usr/bin/umps2),)
+    UMPS2_DIR_PREFIX = /usr
+else
+    UMPS2_DIR_PREFIX = /usr/local
+endif
+
+UMPS2_DATA_DIR = $(UMPS2_DIR_PREFIX)/share/umps2
+UMPS2_INCLUDE_DIR = $(UMPS2_DIR_PREFIX)/include/umps2
+
+# Compiler options
+CFLAGS_LANG = -ffreestanding -ansi
+CFLAGS_MIPS = -mips1 -mabi=32 -mno-gpopt -G 0 -mno-abicalls -fno-pic -mfp32
+CFLAGS = $(CFLAGS_LANG) $(CFLAGS_MIPS) -I$(UMPS2_INCLUDE_DIR) -Wall -O0 -std=gnu11
+
+# Linker options
+LDFLAGS = -G 0 -nostdlib -T $(UMPS2_DATA_DIR)/umpscore.ldscript
+
+# Add the location of crt*.S to the search path
+VPATH = $(UMPS2_DATA_DIR)
+
+.PHONY : all clean
+
+all : kernel.core.umps
+
+kernel.core.umps : kernel
+	umps2-elf2umps -k $<
+
+kernel : p1test_rikaya_v0.o asl.o pcb.o libumps.o
+	$(LD) -o $@ $^ $(LDFLAGS)
+
+clean :
+	-rm -f *.o kernel kernel.*.umps
+
+# Pattern rule for assembly modules
+%.o : %.S
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 
-all: rikaya
 
-p1: p1test_rikaya_v0.o pcb.o asl.o
-	arm-none-eabi-ld -T $(UARM_LIBS)
-	elf2uarm -k rikaya
+Comunque, se si interpreta quello che fa sto makefile è:
 
-mika: $(OBJECTS)
-	arm-none-eabi-ld -T $(UARM_LIBS) $(OBJECTS)
-	elf2uarm -k rikaya
+$(LD) -o $@ $^ $(LDFLAGS)    ->arabo $(LD) va a prendere la LD che è una variabile definita all'inizio, e così via..
 
-asl.o: asl.c include/asl.h
-	arm-none-eabi-gcc -mcpu=arm7tdmi -c -Wall -I . -I "/usr/include/uarm" -I "/usr/include" -I "/usr/include/bits"-I "./include" -o asl.o asl.c
+mipsel-linux-gnu-ld -o p1test_rikaya_v0.o  -G 0 -nostdlib -T /usr/local/share/umps2/umpscore.ldscript
 
-pcb.o: pcb.c include/pcb.h
-	arm-none-eabi-gcc -mcpu=arm7tdmi -c -Wall -I . -I "/usr/include/uarm" -I "/usr/include" -I "/usr/include/bits"-I "./include" -o pcb.o pcb.c
+il percorso di umpscore.ldscript dovrebbe essere lo stesso per tutti quando installi umps2
 
-p1test.o: p1test_rikaya_v0.c $(UARM_H) $(PHASE1_H)
-	arm-none-eabi-gcc -mcpu=arm7tdmi -c -Wall -I . -I "/usr/include/uarm" -I "/usr/include" -I "/usr/include/bits" -I "./include" -o p1test_rikaya_v0.o p1test_rikaya_v0.c
 
-clean:
-	rm -rf *o rikaya
+Scusate ma nel asl.c non è inclusa asl.h!
+da errore se lo includi, non sappiamo bene come gestire la cosa
+Ah ok..
 
-cleanall:
-rm -rf *o rikaya rikaya.core.uarm rikaya.stab.uarm
+Capito!
+
+Comunque in asl.c va inclusa per forza asl.h! Forse gli errori che dà sono da risolvere in altri modi..LD

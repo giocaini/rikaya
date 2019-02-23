@@ -2,6 +2,7 @@
 #define _TYPES11_H
 
 #include <umps/types.h>
+#include "const.h"
 #include "listx.h"
 
 typedef unsigned int memaddr;

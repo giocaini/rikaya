@@ -1,123 +1,65 @@
-In file included from pcb.c:9:
-pcb.c:16:18: error: redefinition of ‘pcbFree_h’
- HIDDEN LIST_HEAD(pcbFree_h); //Macro di listx.h: inizializza la sentinella alla pcbFree. pcbFree_h è la sentinella della coda di pcb
-                  ^~~~~~~~~
-listx.h:78:19: note: in definition of macro ‘LIST_HEAD’
-  struct list_head name = LIST_HEAD_INIT(name)
-                   ^~~~
-pcb.c:16:18: note: previous definition of ‘pcbFree_h’ was here
- HIDDEN LIST_HEAD(pcbFree_h); //Macro di listx.h: inizializza la sentinella alla pcbFree. pcbFree_h è la sentinella della coda di pcb
-                  ^~~~~~~~~
-listx.h:78:19: note: in definition of macro ‘LIST_HEAD’
-  struct list_head name = LIST_HEAD_INIT(name)
-                   ^~~~
-pcb.c:30:13: error: redefinition of ‘initPcbs’
- HIDDEN void initPcbs(void){
-             ^~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:30:13: note: previous definition of ‘initPcbs’ was here
- HIDDEN void initPcbs(void){
-             ^~~~~~~~
-pcb.c:39:13: error: redefinition of ‘freePcb’
- HIDDEN void freePcb(pcb_t *p){
-             ^~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:39:13: note: previous definition of ‘freePcb’ was here
- HIDDEN void freePcb(pcb_t *p){
-             ^~~~~~~
-pcb.c:45:15: error: redefinition of ‘allocPcb’
- HIDDEN pcb_t *allocPcb(void){
+sara@cinesca:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=gnu11 -I/usr/local/include/umps2 -c pcb.c
+In file included from pcb.h:5,
+                 from pcb.c:7:
+const.h:25: warning: "NULL" redefined
+ #define NULL ((void *)0)
+ 
+In file included from types_rikaya.h:5,
+                 from pcb.h:4,
+                 from pcb.c:7:
+listx.h:7: note: this is the location of the previous definition
+ #define NULL ((void *) 0)
+ 
+Ah ok
+ERRORI ASL.C
+sara@cinesca:~/Dropbox/Sistemi operativi/umpsss/examples/phase1$ mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -std=gnu11 -I/usr/local/include/umps2 -c asl.c
+In file included from asl.h:5,
+                 from asl.c:7:
+const.h:25: warning: "NULL" redefined
+ #define NULL ((void *)0)
+ 
+In file included from types_rikaya.h:5,
+                 from asl.h:4,
+                 from asl.c:7:
+listx.h:7: note: this is the location of the previous definition
+ #define NULL ((void *) 0)
+ 
+asl.c: In function ‘insertBlocked’:
+asl.c:48:3: warning: implicit declaration of function ‘insertProcQ’; did you mean ‘insertBlocked’? [-Wimplicit-function-declaration]
+   insertProcQ( &(semd->s_procQ) , p); //aggiunge il PCB nella lista in base alla sua priorità
+   ^~~~~~~~~~~
+   insertBlocked
+asl.c:69:3: warning: implicit declaration of function ‘mkEmptyProcQ’ [-Wimplicit-function-declaration]
+   mkEmptyProcQ( &(new_semd->s_procQ) );   //creo lista di pcb puntata da s_procQ
+   ^~~~~~~~~~~~
+asl.c: In function ‘removeBlocked’:
+asl.c:97:19: warning: implicit declaration of function ‘removeProcQ’; did you mean ‘removeBlocked’? [-Wimplicit-function-declaration]
+  pcb_t* pcb_tmp = removeProcQ( &(semd->s_procQ) ); //rimuovo il primo pcb dalla coda
+                   ^~~~~~~~~~~
+                   removeBlocked
+asl.c:97:19: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+asl.c:101:12: warning: passing argument 1 of ‘list_del’ from incompatible pointer type [-Wincompatible-pointer-types]
+   list_del(&semd); //è vuota => elimino SEMD da ASL
+            ^~~~~
+In file included from types_rikaya.h:5,
+                 from asl.h:4,
+                 from asl.c:7:
+listx.h:161:47: note: expected ‘struct list_head *’ but argument is of type ‘semd_t **’ {aka ‘struct semd_t **’}
+ static inline void list_del(struct list_head *entry)
+                             ~~~~~~~~~~~~~~~~~~^~~~~
+asl.c: In function ‘outBlocked’:
+asl.c:117:15: warning: implicit declaration of function ‘outProcQ’; did you mean ‘outBlocked’? [-Wimplicit-function-declaration]
+  pcb_t* pcb = outProcQ( &(semd->s_procQ), p); //elimina il PCB puntato da p, nella coda puntata da semd->s_procQ
                ^~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:45:15: note: previous definition of ‘allocPcb’ was here
- HIDDEN pcb_t *allocPcb(void){
-               ^~~~~~~~
-pcb.c:73:13: error: redefinition of ‘mkEmptyProcQ’
- HIDDEN void mkEmptyProcQ(struct list_head *head){
-             ^~~~~~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:73:13: note: previous definition of ‘mkEmptyProcQ’ was here
- HIDDEN void mkEmptyProcQ(struct list_head *head){
-             ^~~~~~~~~~~~
-pcb.c:80:12: error: redefinition of ‘emptyProcQ’
- HIDDEN int emptyProcQ(struct list_head *head){
-            ^~~~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:80:12: note: previous definition of ‘emptyProcQ’ was here
- HIDDEN int emptyProcQ(struct list_head *head){
-            ^~~~~~~~~~
-pcb.c:88:13: error: redefinition of ‘insertProcQ’
- HIDDEN void insertProcQ(struct list_head *head, pcb_t *p){
-             ^~~~~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:88:13: note: previous definition of ‘insertProcQ’ was here
- HIDDEN void insertProcQ(struct list_head *head, pcb_t *p){
-             ^~~~~~~~~~~
-pcb.c:106:15: error: redefinition of ‘headProcQ’
- HIDDEN pcb_t *headProcQ(struct list_head *head){
+               outBlocked
+asl.c:117:15: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+asl.c: In function ‘headBlocked’:
+asl.c:131:15: warning: implicit declaration of function ‘headProcQ’; did you mean ‘headBlocked’? [-Wimplicit-function-declaration]
+  pcb_t* pcb = headProcQ( &(semd->s_procQ) );
                ^~~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:106:15: note: previous definition of ‘headProcQ’ was here
- HIDDEN pcb_t *headProcQ(struct list_head *head){
-               ^~~~~~~~~
-pcb.c:116:15: error: redefinition of ‘removeProcQ’
- HIDDEN pcb_t *removeProcQ(struct list_head *head){
-               ^~~~~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:116:15: note: previous definition of ‘removeProcQ’ was here
- HIDDEN pcb_t *removeProcQ(struct list_head *head){
-               ^~~~~~~~~~~
-pcb.c:128:15: error: redefinition of ‘outProcQ’
- HIDDEN pcb_t *outProcQ(struct list_head *head, pcb_t *p){
-               ^~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:128:15: note: previous definition of ‘outProcQ’ was here
- HIDDEN pcb_t *outProcQ(struct list_head *head, pcb_t *p){
-               ^~~~~~~~
-pcb.c:144:12: error: redefinition of ‘emptyChild’
- HIDDEN int emptyChild(pcb_t *this){
-            ^~~~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:144:12: note: previous definition of ‘emptyChild’ was here
- HIDDEN int emptyChild(pcb_t *this){
-            ^~~~~~~~~~
-pcb.c:149:13: error: redefinition of ‘insertChild’
- HIDDEN void insertChild(pcb_t *prnt, pcb_t *p){
-             ^~~~~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:149:13: note: previous definition of ‘insertChild’ was here
- HIDDEN void insertChild(pcb_t *prnt, pcb_t *p){
-             ^~~~~~~~~~~
-pcb.c:156:15: error: redefinition of ‘removeChild’
- HIDDEN pcb_t *removeChild(pcb_t *p){
-               ^~~~~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:156:15: note: previous definition of ‘removeChild’ was here
- HIDDEN pcb_t *removeChild(pcb_t *p){
-               ^~~~~~~~~~~
-pcb.c:172:15: error: redefinition of ‘outChild’
- HIDDEN pcb_t *outChild(pcb_t *p){
-               ^~~~~~~~
-In file included from pcb.h:6,
-                 from pcb.c:11:
-pcb.c:172:15: note: previous definition of ‘outChild’ was here
- HIDDEN pcb_t *outChild(pcb_t *p){
-               ^~~~~~~~
-
-
-
-
-
-mipsel-linux-gnu-gcc -ansi -mips1 -mfp32 -I/usr/local/include/umps2 -c pcb.c
+               headBlocked
+asl.c:131:15: warning: initialization of ‘pcb_t *’ {aka ‘struct pcb_t *’} from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+asl.c: In function ‘outChildBlocked’:
+asl.c:144:6: warning: implicit declaration of function ‘empty_child’ [-Wimplicit-function-declaration]
+  if (empty_child(p)) return; //Caso base: pcb non ha figli --> finisce
+      ^~~~~~~~~~~
