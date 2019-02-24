@@ -19,11 +19,11 @@ UMPS2_INCLUDE_DIR = $(UMPS2_DIR_PREFIX)/include/umps2
 
 # Compiler options
 CFLAGS_LANG = -ffreestanding -ansi
-CFLAGS_MIPS = -mips1 -mfp32 -std=gnu11
-CFLAGS = $(CFLAGS_LANG) $(CFLAGS_MIPS) -I$(UMPS2_INCLUDE_DIR) -I. -Wall
+CFLAGS_MIPS = -mips1 -mfp32 -std=gnu11 -fno-stack-protector
+CFLAGS = $(CFLAGS_LANG) $(CFLAGS_MIPS) -I $(UMPS2_INCLUDE_DIR) -I. -Wall
 
 # Linker options
-LDFLAGS = -G 0 -nostdlib -T $(UMPS2_DATA_DIR)/umpscore.ldscript
+LDFLAGS = -G0 -nostdlib -T $(UMPS2_DATA_DIR)/umpscore.ldscript
 
 # Add the location of crt*.S to the search path
 VPATH = $(UMPS2_DATA_DIR)
