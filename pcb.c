@@ -11,11 +11,6 @@
 
 HIDDEN LIST_HEAD(pcbFree_h); //Macro di listx.h: inizializza la sentinella alla pcbFree. pcbFree_h è la sentinella della coda di pcb
 
-/* DICHIARAZIONI
-HIDDEN void initPcbs(void);
-*/
-void addokbuf(char *strp);
-
 
 /* PCB handling functions */
 
@@ -86,10 +81,34 @@ int emptyProcQ(struct list_head *head){
 		L’inserimento deve avvenire tenendo conto della priorita’ di ciascun pcb (campo p->priority).
 		La coda dei processi deve essere ordinata in base alla priorita’ dei PCB, in ordine decrescente
 		(i.e. l’elemento di testa è l’elemento con la priorita’ più alta). */
+
+/*
+void insertProcQ(struct list_head *head, pcb_t *p){
+	if(list_empty(head)){
+		list_add(&(p->p_next), head);
+		return;
+	} 
+	pcb_t* i;
+	list_for_each_entry(i, head, p_next){
+		if(p->priority > i->priority){
+			list_add(&(p->p_next), list_prev(&(i->p_next)));
+			return;
+		}
+	}
+
+
+}
+*/
+
+
+/* 6 - 	Inserisce l’elemento puntato da p nella coda dei processi puntata da head.
+		L’inserimento deve avvenire tenendo conto della priorita’ di ciascun pcb (campo p->priority).
+		La coda dei processi deve essere ordinata in base alla priorita’ dei PCB, in ordine decrescente
+		(i.e. l’elemento di testa è l’elemento con la priorita’ più alta). */
 void insertProcQ(struct list_head *head, pcb_t *p){
 	pcb_t* i; //lo uso nel ciclo
 	list_for_each_entry(i, head, p_next){
-		if (p->priority > i->priority) {
+		if (p->priority > i->priority) {  //i->p_next.prev
 			list_add(&(p->p_next), list_prev(&(i->p_next))); //Elemento precedente al Pcb dove voglio inserire p (In genere viene richiesta la sentinella e viene aggiunto in testa)
 			//Se la priorità di p è maggiore di quella di i, p va inserito tra il precedente di i e i.
 			return; //Se arrivo qui, l'elemento l'ho già inserito;
@@ -98,7 +117,11 @@ void insertProcQ(struct list_head *head, pcb_t *p){
 	//La lista è vuota o p->priority è più basso di qualsiasi pcb presente nella lista.
 	//Inserisco p in coda alla lista head
 	list_add_tail(&(p->p_next), head);
+	return;
 }
+
+
+
 
 /* 7 - 	Restituisce l’elemento di testa della coda dei processi da head, SENZA RIMUOVERLO.
 		Ritorna NULL se la coda non ha elementi. */
@@ -131,17 +154,18 @@ pcb_t *removeProcQ(struct list_head *head){
 /* 9 - 	Rimuove il PCB puntato da p dalla coda dei processi puntata da head. Se p non è presente nella coda,
 		restituisce NULL. (NOTA: p può trovarsi in una posizione arbitraria della coda). */
 
-pcb_t *outProcQ(struct list_head *head, pcb_t *p){
-    pcb_t *i; //lo uso nel ciclo
+pcb_t *outProcQ(struct list_head *head, pcb_t* p){
+    pcb_t* i; //lo uso nel ciclo
     list_for_each_entry(i, head, p_next){        //ciclo sulla lista ASL partendo da head
-	if(i==p){
-		list_del(&(i->p_next));
-		return i;//elemento pcb_t
+		if(i==p){
+			list_del(&(i->p_next));
+			return i;//elemento pcb_t
+		}
 	}
-	
+	return NULL;
 }
-return NULL;
-}
+
+
 
 /***********************/
 /* Tree view functions */

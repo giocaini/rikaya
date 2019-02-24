@@ -7,6 +7,9 @@
 #include "asl.h"
 #include "pcb.h"
 
+//DA CANCELLAREEEEEEEEEE
+void addokbuf(char *strp);
+
 /**************************/
 /* ASL handling functions */
 /**************************/
@@ -53,6 +56,7 @@ int insertBlocked(int *key, pcb_t* p){
 						//e se è un albero? cosa ne sa SEMD se punta a una lista o ad un albero???
 						//### SEMD è sempre un semaforo (che fa parte di una lista)
 						//### p è un processo: non ci interessa sapere se p fa parte di un albero
+		p->p_semkey=key;
 		return FALSE;
 	}
 
@@ -70,7 +74,8 @@ int insertBlocked(int *key, pcb_t* p){
 		new_semd->s_key = key;							//assegno key
 			//### ho tolto la & da &key
 		mkEmptyProcQ( &(new_semd->s_procQ) );			//creo lista di pcb puntata da s_procQ
-		insertProcQ( &(semd->s_procQ) , p);	
+		insertProcQ( &(new_semd->s_procQ) , p);	
+		p->p_semkey=key;
 		return FALSE;
 	}
 	 
