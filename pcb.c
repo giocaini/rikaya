@@ -92,9 +92,7 @@ void insertProcQ(struct list_head *head, pcb_t *p){
 		if (p->priority > i->priority) {
 			list_add(&(p->p_next), list_prev(&(i->p_next))); //Elemento precedente al Pcb dove voglio inserire p (In genere viene richiesta la sentinella e viene aggiunto in testa)
 			//Se la priorità di p è maggiore di quella di i, p va inserito tra il precedente di i e i.
-			/*__list_add(&(p->p_next), &(list_prev(i->p_next)), &(i->p_next)); //inserisco p nella lista head tra prev di i e i
 			return; //Se arrivo qui, l'elemento l'ho già inserito;
-			*/
 		}
 	}
 	//La lista è vuota o p->priority è più basso di qualsiasi pcb presente nella lista.
@@ -133,6 +131,17 @@ pcb_t *removeProcQ(struct list_head *head){
 /* 9 - 	Rimuove il PCB puntato da p dalla coda dei processi puntata da head. Se p non è presente nella coda,
 		restituisce NULL. (NOTA: p può trovarsi in una posizione arbitraria della coda). */
 
+pcb_t *outProcQ(struct list_head *head, pcb_t p){
+    pcb_t i; //lo uso nel ciclo
+    list_for_each_entry(i, head, p_next){        //ciclo sulla lista ASL partendo da head
+	if(i==p){
+		list_del(&(i->p_next));
+		return i;//elemento pcb_t
+	}
+	return NULL;
+}
+
+/*
 pcb_t *outProcQ(struct list_head *head, pcb_t *p){
 	if(list_empty(head)){
 		addokbuf("lista vuota \n");
@@ -174,6 +183,7 @@ pcb_t *outProcQ(struct list_head *head, pcb_t *p){
 		}
 	}
 }
+*/
 /*
 pcb_t *outProcQ(struct list_head *head, pcb_t *p){
 
