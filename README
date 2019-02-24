@@ -1,31 +1,33 @@
-﻿SISTEMI OPERATIVI - PROGETTO DI LABORATORIO 2018/2019
+﻿SISTEMI OPERATIVI - PROGETTO DI LABORATORIO 2018/2019 - RIKAYA
 
 PHASE 1
 
 Il programma vuole mostrare la corretta implementazione delle funzioni che utilizzano le strutture dati PCB (Process Control Block) e SEMD.
 
 1.File
--pcb.c
--pcb.h
--asl.c
--asl.h
--p1test_rikaya-v0.c
--listx.h
--const.h
--types_rikaya.h
--Makefile
+- Header .h (cartella include/)
+- - pcb.h
+- - asl.h
+- - listx.h
+- - const.h
+- - types_rikaya.h
+- Sorgenti c
+- - pcb.c
+- - asl.c
+- - p1test_rikaya-v0.c
+- Makefile
 
 2.Esecuzione
 Per compilare e linkare il programma bisogna innanzitutto eseguire il comando 'make' nella cartella in cui sono contenuti i file. 
 Dopo aver eseguito questo comando vengono creati i file oggetto delle librerie necessarie e il kernel, da utilizzare per il corretto funzionamento della macchina.
 
--pcb.o
--asl.o
--crtso.o
--libums.o
--kernel
--kernel.core.umps
--kernel.stab.umps
+- pcb.o
+- asl.o
+- crtso.o
+- libums.o
+- kernel
+- kernel.core.umps
+- kernel.stab.umps
 
 Aprire uMPS2 e creare una nuova configurazione per la macchina virtuale, inserire i file 'kernel.core.umps'e 'kernel.stab.umps' dove necessario, accendere la macchina ed eseguire.
 
