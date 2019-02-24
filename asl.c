@@ -20,19 +20,20 @@ HIDDEN LIST_HEAD(semdFree_h);	//semdFree_h è la sentinella della lista semdFree
 
 /* 14 - Restituisce il puntatore al SEMD nella ASL la cui chiave è pari a key.
 		Se non esiste un elemento nella ASL con chiave eguale a key, viene restituito NULL.*/
-HIDDEN semd_t* getSemd(int *key){
+semd_t* getSemd(int *key){
 
 	if (list_empty(&semd_h)) return NULL; 		//se ASL è vuota -> NULL
 	semd_t* i; //per ciclare sulla lista ASL
 	list_for_each_entry(i, &semd_h, s_next){		//ciclo sulla lista ASL partendo da sentinella semd_h
-		if( key == i->s_key) return i;
+		if( key == (i->s_key)) return i;
 			//container_of(semd_h.next , semd_t, s_next);
 			//semd_h.next non va bene, ritorna sempre l'elemento successivo alla sentinella
 			//### Non si può usare i.s_key perchè i è un puntatore: quindi i->s_key
-		if(&(i->s_next) == &semd_h) return NULL;
+		//if(&(i->s_next) == &semd_h) return NULL;
 		//Se arrivo a un elemento che ha come elemento successivo la sentinella allora sei arrivato all'ultimo e pui smettere di cercare
-		else return NULL;
+		//else return NULL;
 	}
+	return NULL;
 }
 
 /* 15 -	Viene inserito il PCB puntato da p nella coda dei processi bloccati associata
