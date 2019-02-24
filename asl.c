@@ -57,7 +57,6 @@ int insertBlocked(int *key, pcb_t* p){
 	insertProcQ( &(new_semd->s_procQ) , p);			//inserirsco il SEMD nella coda di p
 	p->p_semkey=key;								//aggiorna la semkey di p
 	return FALSE;
-	}
 }
 
 /* 16 -	Ritorna il primo PCB dalla coda dei processi bloccati (s_ProcQ) associata al SEMD 
