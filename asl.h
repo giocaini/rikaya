@@ -5,7 +5,7 @@
 #include "pcb.h"
 
 /* ASL handling functions 14 - 20 */
-HIDDEN semd_t* getSemd(int *key);
+semd_t* getSemd(int *key);
 int insertBlocked(int *key,pcb_t*p);
 pcb_t* removeBlocked(int *key);
 pcb_t* outBlocked(pcb_t *p);

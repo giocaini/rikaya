@@ -14,6 +14,8 @@ HIDDEN LIST_HEAD(pcbFree_h); //Macro di listx.h: inizializza la sentinella alla 
 /* DICHIARAZIONI
 HIDDEN void initPcbs(void);
 */
+void addokbuf(char *strp);
+
 
 /* PCB handling functions */
 
@@ -25,6 +27,9 @@ HIDDEN void initPcbs(void);
 		Questo metodo deve essere chiamato una volta sola in fase di inizializzazione della struttura dati. */
 void initPcbs(void){
 	HIDDEN pcb_t pcbFree_table[MAXPROC]; //Array statico contenente MAX_PROC pcb_t
+
+	INIT_LIST_HEAD(&(pcbFree_h));
+
 	for (int i=0; i<MAXPROC; i++){
 		pcb_t* newPcb = &pcbFree_table[i]; //Mette in newPcp l'iesimo elemento della tabella dei pcb
 		list_add_tail(&(newPcb->p_next), &(pcbFree_h)); 	//Aggiunge l'elemento in coda alla lista pcbFree
@@ -119,7 +124,7 @@ pcb_t *removeProcQ(struct list_head *head){
 	if (list_empty(head))
 		return NULL;
 	//Nella lista c'è almeno un elemento: rimuovo e restituisco il primo (priorità massima)
-	pcb_t* tempPcb = container_of(pcbFree_h.next, pcb_t, p_next); //Restituisce puntatore al primo elemento della pcbFree (non lo rimuove!)
+	pcb_t* tempPcb = container_of(head->next, pcb_t, p_next); //Restituisce puntatore al primo elemento della  (non lo rimuove!)
 	list_del(&(tempPcb->p_next)); //Rimuove tempPcb dalla lista head (NON lo dealloca!)
 	return tempPcb;
 
@@ -127,16 +132,70 @@ pcb_t *removeProcQ(struct list_head *head){
 
 /* 9 - 	Rimuove il PCB puntato da p dalla coda dei processi puntata da head. Se p non è presente nella coda,
 		restituisce NULL. (NOTA: p può trovarsi in una posizione arbitraria della coda). */
+
 pcb_t *outProcQ(struct list_head *head, pcb_t *p){
-	pcb_t* i; //lo uso nel ciclo
-	list_for_each_entry(i, head, p_next){
-		if (p == i) {	//Ho trovato p in head: lo rimuovo e lo restituisco
-			list_del(&(i->p_next));
-			return p;
+	if(list_empty(head)){
+		addokbuf("lista vuota \n");
+		return NULL;
+	}
+	else{
+		pcb_t* i;
+		pcb_t* t;
+		_Bool b= FALSE;
+		list_for_each_entry(i, head, p_next){
+			addokbuf("entro nel ciclo\n");
+			//controllo lista se è vuota
+			if( (&(i->p_next) == head) && b==FALSE  ){
+				addokbuf("non trovo->c'e' solo sentinella\n");
+				return NULL;
+			}
+			addokbuf("passato primo if\n");
+			//controllo p
+			if(b==FALSE){
+				addokbuf("controllo p \n");
+				if(i==p){
+					addokbuf("e' uguale e lo tolgo\n");
+					b=TRUE;
+					t=p;
+					list_del(&(p->p_next));
+					goto stop;
+				}
+			}
+			addokbuf("passato seconfo if\n");
+		}
+		stop:
+		if(b==TRUE){
+			addokbuf("okay restituisco p");
+			return t;
+		}
+		else{
+			addokbuf("bo non ho trovato e non sono neanche arriavata alla sentinella");
+			return NULL;
 		}
 	}
-	return NULL; //Non ho trovato p in head: restituisco NULL
 }
+/*
+pcb_t *outProcQ(struct list_head *head, pcb_t *p){
+
+	//list_head *iter;  -> posso scriverlo così &(pcb_tmp->p_next)
+	pcb_t* pcb_tmp; //lo uso nel ciclo
+
+	list_for_each_entry( &(pcb_tmp->p_next) , head, next){
+
+        //pcb_tmp = container_of( iter, pcb_t, p_next);	Estraggo il puntatore all'elemento corrente
+
+		if (p == pcb_tmp) {	//Ho trovato p in head: lo rimuovo e lo restituisco
+			list_del(&(pcb_tmp->p_next));
+			return p;
+		}
+
+		if( &(pcb_tmp->p_next) == head  ) return NULL;    //condizione d'arresto
+	}
+	return NULL; //Non ho trovato p in head: restituisco NULL
+
+}
+*/
+
 
 /***********************/
 /* Tree view functions */
