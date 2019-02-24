@@ -41,3 +41,8 @@ git commit -m "messaggio da registrare "
 git push 
     utente 'invio' 
      password 'password'
+
+
+//fare cartella compressa
+tar -zcvf tar-archive-name.tar.gz source-folder-name
+
